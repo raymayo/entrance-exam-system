@@ -1,0 +1,23 @@
+{
+  "name": "entrance-exam-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raymayo/entrance-exam-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/raymayo/entrance-exam-system/issues"
+  },
+  "homepage": "https://github.com/raymayo/entrance-exam-system#readme"
+}
