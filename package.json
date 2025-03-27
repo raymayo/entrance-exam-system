@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/raymayo/entrance-exam-system/issues"
   },
-  "homepage": "https://github.com/raymayo/entrance-exam-system#readme"
+  "homepage": "https://github.com/raymayo/entrance-exam-system#readme",
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  }
 }
