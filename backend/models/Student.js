@@ -1,111 +1,52 @@
 import mongoose from 'mongoose';
+import crypto from 'crypto';
 
-const StudentSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
+const StudentSchema = new mongoose.Schema(
+    {
+        regNo: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        phone: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        examDate: { type: Date, default: null },
+        name: { type: String, default: null },
+        gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'], default: null },
+        address: { type: String, default: null },
+        birthday: { type: Date, default: null },
+        birthplace: { type: String, default: null },
+        guardian: { type: String, default: null },
+        lastSchool: { type: String, default: null },
+        lastSchoolAddress: { type: String, default: null },
+        course1st: { type: String, default: null },
+        course2nd: { type: String, default: null },
+        transfereeCourse: { type: String, default: null },
+        english: { type: Number, min: 0, default: null },
+        filipino: { type: Number, min: 0, default: null },
+        math: { type: Number, min: 0, default: null },
+        science: { type: Number, min: 0, default: null },
+        socialstudies: { type: Number, min: 0, default: null },
+        expiresAt: {
+            type: Date,
+            expires: '30d',
+            default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
     },
-    phone: {
-        type: String,
-        required: true,
-    },
-    examDate: {
-        type: Date,
-        required: false,
-        default: null,
-    },
-    name: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    gender: {
-        type: String,
-        enum: ['MALE', 'FEMALE', 'OTHER'],
-        required: false,
-        default: null,
-    },
-    address: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    birthday: {
-        type: Date,
-        required: false,
-        default: null,
-    },
-    birthplace: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    guardian: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    lastSchool: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    lastSchoolAddress: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    course1st: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    course2nd: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    transfereeCourse: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    english: {
-        type: Number,
-        min: 0,
-        required: false,
-        default: null,
-    },
-    filipino: {
-        type: Number,
-        min: 0,
-        required: false,
-        default: null,
-    },
-    math: {
-        type: Number,
-        min: 0,
-        required: false,
-        default: null,
-    },
-    science: {
-        type: Number,
-        min: 0,
-        required: false,
-        default: null,
-    },
-    socialstudies: {
-        type: Number,
-        min: 0,
-        required: false,
-        default: null,
-    },
-    expiresAt: {
-        type: Date,
-        expires: '30d', // Auto-delete after 30 days
-        default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    },
-}, { timestamps: true });
+    { timestamps: true }
+);
 
 const Student = mongoose.model('Student', StudentSchema);
 
