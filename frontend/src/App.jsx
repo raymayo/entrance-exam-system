@@ -1,14 +1,15 @@
-import { useState } from 'react';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import Registration from "./components/Registration.jsx";
 
 function App() {
-	const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0);
 
-	return (
-		<>
-			<h1>hello</h1>
-		</>
-	);
+  return (
+    <>
+      <Registration />
+    </>
+  );
 }
 
 export default App;
