@@ -22,5 +22,9 @@
   "homepage": "https://github.com/raymayo/entrance-exam-system#readme",
   "devDependencies": {
     "prettier": "^3.5.3"
+  },
+  "dependencies": {
+    "qrcode.react": "^4.2.0",
+    "react-router-dom": "^7.4.1"
   }
 }

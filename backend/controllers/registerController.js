@@ -62,6 +62,16 @@ export const getStudents = async (req, res) => {
     }
 };
 
+export const getStudentByRegNo = async (req, res) => {
+    try {
+        const student = await Student.findOne({ regNo: req.params.regNo });
+        if (!student) return res.status(404).json({ error: "Student not found" });
+        res.status(200).json(student);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 // Get a single student by ID
 export const getStudentById = async (req, res) => {
     try {

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({ phone: "", email: "" });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -30,6 +33,9 @@ const Registration = () => {
       }
 
       setSuccess("Registration successful!");
+      //   console.log(data.regNo);
+      navigate(`/${data.regNo}`); // Redirect to QR code page with regNo
+
       setFormData({ phone: "", email: "" }); // Reset form
     } catch (err) {
       setError(err.message);
