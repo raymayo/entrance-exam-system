@@ -27,6 +27,8 @@ const UpdateDetails = ({ studentId }) => {
   const [errorMessage, setErrorMessage] = useState('');
   
   useEffect(() => {
+
+        if (!regNo) return;
     // Fetch the student data
     const fetchStudentData = async () => {
       try {

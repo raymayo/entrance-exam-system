@@ -4,7 +4,7 @@ import { removeExpiresAtOnLogin, getStudentByRegNo } from '../controllers/studen
 const router = express.Router();
 
 router.post('/', removeExpiresAtOnLogin);
-router.get('/:id', getStudentByRegNo)
+router.get('/:regNo', getStudentByRegNo)
 
 
 export default router;
