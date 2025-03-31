@@ -33,12 +33,13 @@ const Registration = () => {
       }
 
       setSuccess("Registration successful!");
+      navigate(`/${data.regNo}`);
       //   console.log(data.regNo);
-      navigate(`/${data.regNo}`); // Redirect to QR code page with regNo
-
-      setFormData({ phone: "", email: "" }); // Reset form
+      // Redirect to QR code page with regNo
     } catch (err) {
       setError(err.message);
+    } finally {
+      setFormData({ phone: "", email: "" }); // Reset form
     }
   };
 
