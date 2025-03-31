@@ -1,23 +1,24 @@
 @import "tailwindcss";
+
 * {
-  box-sizing: border-box;
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
+	box-sizing: border-box;
+	font-family: "Inter", sans-serif;
+	font-optical-sizing: auto;
 }
 
 :root {
-  line-height: 1.5;
-  font-weight: 400;
+	line-height: 1.5;
+	font-weight: 400;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 .pattern {
-  background: white !important;
-  background: url("../public/asset2.svg") repeat !important;
+	background: white !important;
+	background: url("../public/asset2.svg") repeat !important;
 }
 
 /* a {

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import cors from 'cors'; // Import CORS
 import registerRoutes from './routes/registerRoutes.js';
+import studentRoutes from './routes/studentRoutes.js'
 
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/register', registerRoutes);
+app.use('/api/student', studentRoutes)
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)

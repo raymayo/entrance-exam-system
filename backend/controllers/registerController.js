@@ -2,52 +2,56 @@ import Student from '../models/Student.js';
 import Counter from '../models/Counter.js';
 import crypto from 'crypto';
 
-// Create a new student
+
+
+
+// Helper function to generate a registration number
+const generateRegNo = async () => {
+    let counter = await Counter.findOneAndUpdate(
+        { name: 'registration' }, // Ensure it matches existing document
+        { $inc: { value: 1 } }, // Increment the counter
+        { new: true, upsert: true } // Return updated document, create if missing
+    );
+
+    return `reg-${counter.value}`;
+};
+
+
+
+// Helper function to generate a random password
+const generatePassword = () => crypto.randomBytes(4).toString('hex');
+
+// Main function to create a student
 export const createStudent = async (req, res) => {
     try {
-        // Log the request body
         console.log('Request body:', req.body);
 
-        // Create a new student instance with the request body excluding the regNo
-        const studentData = { ...req.body }; // Clone the body to avoid mutation
+        const studentData = { ...req.body };
 
-        // Generate regNo manually from the Counter collection
-        const counter = await Counter.findOneAndUpdate(
-            { name: 'registration' },
-            { $inc: { value: 1 } },
-            { new: true, upsert: true, setDefaultsOnInsert: true } // This will insert with the default value of 1000 if no counter exists
-        );
+        // Generate a unique registration number
+        studentData.regNo = await generateRegNo();
 
-        // If counter value is 1, reset it to 1000 to ensure the first regNo starts from 1000
-        if (counter.value === 1) {
-            counter.value = 1000;
-            await counter.save(); // Save the updated counter value
+        if (!studentData.regNo) {
+            throw new Error("Failed to generate a unique registration number");
         }
 
-        const regNo = `reg-${counter.value}`; // Create regNo using the counter value
-        studentData.regNo = regNo; // Assign regNo to studentData
+        // Generate a password if not provided
+        studentData.password = generatePassword()
 
-        // Ensure password is generated if not provided
-        if (!studentData.password) {
-            studentData.password = crypto.randomBytes(4).toString('hex');
-        }
-
-        // Create a new Student instance
         const student = new Student(studentData);
-
         console.log('Student object before saving:', student);
 
-        // Save the student to the database
-        await student.save();
+        const savedStudent = await student.save();
+        console.log('Student saved:', savedStudent);
 
-        // Send a response with the created student
-        res.status(201).json(student);
+        res.status(201).json(savedStudent);
     } catch (error) {
         console.error('Error:', error);
-        // Handle error and send a response
         res.status(400).json({ error: error.message });
     }
 };
+
+
 
 
 
@@ -62,15 +66,6 @@ export const getStudents = async (req, res) => {
     }
 };
 
-export const getStudentByRegNo = async (req, res) => {
-    try {
-        const student = await Student.findOne({ regNo: req.params.regNo });
-        if (!student) return res.status(404).json({ error: "Student not found" });
-        res.status(200).json(student);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-}
 
 // Get a single student by ID
 export const getStudentById = async (req, res) => {
@@ -104,3 +99,4 @@ export const deleteStudent = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+

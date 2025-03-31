@@ -33,7 +33,7 @@ const Registration = () => {
       }
 
       setSuccess("Registration successful!");
-      navigate(`/${data.regNo}`);
+      navigate(`/student/${data._id}`);
       //   console.log(data.regNo);
       // Redirect to QR code page with regNo
     } catch (err) {
