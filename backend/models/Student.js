@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import crypto from 'crypto';
 
 const StudentSchema = new mongoose.Schema(
     {
@@ -34,11 +33,16 @@ const StudentSchema = new mongoose.Schema(
         course1st: { type: String, default: null },
         course2nd: { type: String, default: null },
         transfereeCourse: { type: String, default: null },
-        english: { type: Number, min: 0, default: null },
-        filipino: { type: Number, min: 0, default: null },
-        math: { type: Number, min: 0, default: null },
-        science: { type: Number, min: 0, default: null },
-        socialstudies: { type: Number, min: 0, default: null },
+
+        // Exam scores as an object
+        examScores: {
+            english: { type: Number, min: 0, default: null },
+            filipino: { type: Number, min: 0, default: null },
+            math: { type: Number, min: 0, default: null },
+            science: { type: Number, min: 0, default: null },
+            socialstudies: { type: Number, min: 0, default: null },
+        },
+
         expiresAt: {
             type: Date,
             expires: '30d',
