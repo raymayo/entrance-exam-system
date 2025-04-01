@@ -1,40 +1,60 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Entrance = () => {
-  const [regNo, setRegNo] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [regNo, setRegNo] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [auth, setAuth] = useState();
 
   const navigate = useNavigate();
 
-  // Handle the form submission
+  // Fetch student ID when regNo is valid (length >= 8)
+  useEffect(() => {
+    const fetchStudentData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/student/${regNo}`,
+        );
+        const data = await response.json();
+        setAuth(data);
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+        setErrorMessage("An error occurred while fetching the data");
+      }
+    };
+
+    if (regNo.length >= 8) {
+      fetchStudentData();
+    }
+  }, [regNo]);
+
+  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload on form submit
+    e.preventDefault();
+    setErrorMessage(""); // Clear previous errors
 
     try {
-      const response = await fetch('http://localhost:5000/api/student', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch("http://localhost:5000/api/student", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ regNo, password }),
       });
 
       const data = await response.json();
 
-      if (response.ok) {
-        // If login is successful
-        alert('Login successful');
-        // You can redirect or handle further after successful login
-        navigate(`/student/details/${regNo}`);
-      } else {
-        // If login failed
-        setErrorMessage(data.message || 'Invalid credentials');
+      if (!response.ok) {
+        throw new Error(data.message || "Invalid credentials");
       }
+
+      if (!auth) return;
+
+      localStorage.setItem("authUser", JSON.stringify(auth));
+      alert("Login successful");
+      navigate(`/student/${auth._id}/details/`, { replace: true });
     } catch (error) {
-      console.error('Error during login:', error);
-      setErrorMessage('An error occurred while logging in.');
+      console.error("Error during login:", error);
+      setErrorMessage(error.message);
     }
   };
 
@@ -42,31 +62,31 @@ const Entrance = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <h1>Entrance Exam</h1>
-        
+
         <label>
           Registration No.
-          <input 
-            type="text" 
-            value={regNo} 
-            onChange={(e) => setRegNo(e.target.value)} 
-            required 
+          <input
+            type="text"
+            value={regNo}
+            onChange={(e) => setRegNo(e.target.value)}
+            required
           />
         </label>
-        
+
         <label>
           Password
-          <input 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </label>
 
         <button type="submit">Enter</button>
       </form>
 
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
     </div>
   );
 };

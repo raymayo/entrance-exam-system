@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const UpdateDetails = ({ studentId }) => {
-  const { regNo } = useParams();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  // const [id, setId] = useState("");
 
   const [student, setStudent] = useState({
     regNo: "",
@@ -25,14 +28,16 @@ const UpdateDetails = ({ studentId }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (!regNo) return;
+    if (!id) return;
     // Fetch the student data
     const fetchStudentData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/student/${regNo}`,
+          `http://localhost:5000/api/register/${id}`,
         );
         const data = await response.json();
+
+        // setId(data._id);
 
         setStudent({
           regNo: data.regNo,
@@ -56,6 +61,7 @@ const UpdateDetails = ({ studentId }) => {
         if (response.ok) {
         } else {
           setErrorMessage("Error fetching student data");
+          // navigate("/entrance");
         }
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -76,29 +82,22 @@ const UpdateDetails = ({ studentId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError("");
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/students/${studentId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(student),
-        },
-      );
-
-      if (response.ok) {
-        alert("Student data updated successfully!");
-      } else {
-        const data = await response.json();
-        setErrorMessage(data.message || "Failed to update student data.");
-      }
-    } catch (error) {
-      console.error("Error updating student data:", error);
-      setErrorMessage("An error occurred while updating the student data.");
+      const response = await fetch(`/api/register/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(student),
+      });
+      if (!response.ok) throw new Error("Failed to update student");
+      navigate("/students"); // Redirect after success
+    } catch (err) {
+      setError(err.message);
     }
+  };
+
+  const handleNavigate = () => {
+    navigate(`/student/${id}/exam`, { state: student });
   };
 
   return (
@@ -116,20 +115,20 @@ const UpdateDetails = ({ studentId }) => {
               type="text"
               name="regNo"
               placeholder="e.g. 20-4567"
-              value={student.regNo}
+              value={student?.regNo || ""}
               onChange={handleChange}
               required
               disabled
             />
           </label>
-          <label className="col-span-4 flex flex-col gap-1 text-sm font-medium">
+          <label className="col-span-5 flex flex-col gap-1 text-sm font-medium">
             Name
             <input
               className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
               type="text"
               name="name"
               placeholder="e.g. Dela Cruz, Juan, M."
-              value={student.name}
+              value={student?.name || ""}
               onChange={handleChange}
               required
               disabled
@@ -142,7 +141,7 @@ const UpdateDetails = ({ studentId }) => {
               type="number"
               name="phone"
               placeholder="e.g. 09123456789"
-              value={student.phone}
+              value={student?.phone || ""}
               onChange={handleChange}
               required
               disabled
@@ -155,7 +154,7 @@ const UpdateDetails = ({ studentId }) => {
               type="email"
               name="email"
               placeholder="e.g. 09123456789"
-              value={student.email}
+              value={student?.email || ""}
               onChange={handleChange}
               required
               disabled
@@ -169,7 +168,7 @@ const UpdateDetails = ({ studentId }) => {
               name="genderSelect"
               id="genderSelect"
               onChange={handleChange}
-              value={student.genderSelect}
+              value={student?.genderSelect || ""}
               required
             >
               <option value="" disabled>
@@ -186,7 +185,7 @@ const UpdateDetails = ({ studentId }) => {
               type="text"
               name="address"
               placeholder="e.g. 0123 Rizal St. Matain, Subic, Zambales"
-              value={student.address}
+              value={student?.address || ""}
               onChange={handleChange}
               required
             />
@@ -195,10 +194,10 @@ const UpdateDetails = ({ studentId }) => {
             Birthday
             <input
               className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
-              type="text"
+              type="date"
               name="birthday"
               placeholder="MM/DD/YYYY"
-              value={student.birthday}
+              value={student?.birthday || ""}
               onChange={handleChange}
               required
             />
@@ -210,7 +209,7 @@ const UpdateDetails = ({ studentId }) => {
               type="text"
               name="birthplace"
               placeholder="Matain, Subic, Zambales"
-              value={student.birthplace}
+              value={student?.birthplace || ""}
               onChange={handleChange}
               required
             />
@@ -223,7 +222,7 @@ const UpdateDetails = ({ studentId }) => {
               type="text"
               name="guardianName"
               placeholder="e.g. Juan Dela Cruz"
-              value={student.guardianName}
+              value={student?.guardianName || ""}
               onChange={handleChange}
               required
             />
@@ -234,7 +233,7 @@ const UpdateDetails = ({ studentId }) => {
               className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
               type="text"
               name="lastSchool"
-              value={student.lastSchool}
+              value={student?.lastSchool || ""}
               onChange={handleChange}
               placeholder="Name of Previous School"
               required
@@ -246,7 +245,7 @@ const UpdateDetails = ({ studentId }) => {
               className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
               type="text"
               name="lastSchoolAddress"
-              value={student.lastSchoolAddress}
+              value={student?.lastSchoolAddress || ""}
               onChange={handleChange}
               placeholder="Address of Previous School"
               required
@@ -257,7 +256,7 @@ const UpdateDetails = ({ studentId }) => {
             <select
               className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
               name="course1st"
-              value={student.course1st}
+              value={student?.course1st || ""}
               onChange={handleChange}
               required
             >
@@ -280,7 +279,7 @@ const UpdateDetails = ({ studentId }) => {
             <select
               className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
               name="course2nd"
-              value={student.course2nd}
+              value={student?.course2nd || ""}
               onChange={handleChange}
               required
             >
@@ -305,17 +304,18 @@ const UpdateDetails = ({ studentId }) => {
               type="text"
               name="transfereeCourse"
               placeholder="Course Taken from Previous School"
-              value={student.transfereeCourse}
+              value={student?.transfereeCourse || ""}
               onChange={handleChange}
             />
           </label>
         </div>
 
         <button
-          type="submit"
+          type="button"
           className="mt-6 w-full cursor-pointer rounded-md border border-zinc-200 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-100 shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+          onClick={handleNavigate}
         >
-          Register
+          Proceed
         </button>
       </form>
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
