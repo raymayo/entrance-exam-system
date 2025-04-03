@@ -40,6 +40,13 @@ const UpdateDetails = () => {
             course2nd: data.course2nd || "",
             transfereeCourse: data.transfereeCourse || "",
             examDate: data.examDate || "",
+            examScores: {
+              english: 0,
+              filipino: 0,
+              math: 0,
+              science: 0,
+              socialstudies: 0,
+            },
           });
         } else {
           setErrorMessage("Error fetching student data");

@@ -1,23 +1,15 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useStudent } from "../context/StudentContext.jsx";
 
 const ExamSelection = () => {
-  const location = useLocation();
   const navigate = useNavigate();
+  const { student, setStudent } = useStudent(); // Use setStudent here
+  const { id } = useParams();
 
-  const [studentData, setStudent] = useState(null);
+  console.log(student);
 
   // Using useEffect to avoid infinite re-renders
-  useEffect(() => {
-    if (location.state) {
-      setStudent(location.state); // Set studentData once when location.state changes
-    }
-  }, [location.state]);
-
-  // Only destructure `key` if `studentData` is not null
-  const key = studentData?.key;
-
-  console.log(key); // Logs the `key` from studentData
 
   const subjects = [
     {
@@ -41,14 +33,14 @@ const ExamSelection = () => {
       img: "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
     },
     {
-      id: "socialstudy",
+      id: "socialstudies",
       name: "Social Study",
       img: "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
     },
   ];
 
   const handleStart = (subjectId) => {
-    navigate(`/student/${key}/exam/${subjectId}`, { state: { studentData } });
+    navigate(`/student/${id}/exam/${subjectId}`);
   };
 
   return (
@@ -61,6 +53,7 @@ const ExamSelection = () => {
           >
             <img src={subject.img} className="rounded-lg" alt={subject.name} />
             {subject.name}
+            <p>Score: {student.examScores[subject.id]}</p>
             <button
               className="cursor-pointer rounded-lg border px-4 py-2"
               onClick={() => handleStart(subject.id)}
