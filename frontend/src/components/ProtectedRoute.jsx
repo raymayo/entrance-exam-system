@@ -1,22 +1,11 @@
-import React, { useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoute = ({ element }) => {
-  const location = useLocation();
-  const isAuthenticated = localStorage.getItem("authUser");
+const ProtectedRoute = () => {
+  const isAuthenticated = localStorage.getItem("authUser") !== null;
 
-  useEffect(() => {
-    window.history.pushState(null, "", window.location.href);
-    window.onpopstate = () => {
-      window.history.pushState(null, "", window.location.href);
-    };
-  }, []);
+  console.log("Is Authenticated:", isAuthenticated); // Debugging log
 
-  return isAuthenticated ? (
-    element
-  ) : (
-    <Navigate to="/entrance" state={{ from: location }} />
-  );
+  return isAuthenticated ? <Outlet /> : <Navigate to="/entrance" replace />;
 };
 
 export default ProtectedRoute;

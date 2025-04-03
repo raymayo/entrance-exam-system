@@ -1,33 +1,32 @@
-import { useState } from "react";
-import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Registration from "./components/Registration.jsx";
 import GenerateQR from "./components/GenerateQR.jsx";
 import Entrance from "./components/Entrance.jsx";
 import UpdateDetails from "./components/UpdateDetails.jsx";
 import ExamSelection from "./components/ExamSelection.jsx";
+import Exam from "./components/Exam.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { StudentProvider } from "./context/StudentContext.jsx"; // Import your context provider
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/student/:id" element={<GenerateQR />} />
-        <Route path="/" element={<Registration />} />
-        <Route path="/entrance" element={<Entrance />} />
+    <StudentProvider>
+      {/* Context should wrap the entire Router */}
+      <Router>
+        <Routes>
+          <Route path="/" element={<Registration />} />
+          <Route path="/entrance" element={<Entrance />} />
+          <Route path="/student/:id" element={<GenerateQR />} />
 
-        {/* Protected Route for UpdateDetails */}
-        <Route
-          path="/student/:id/details"
-          element={<ProtectedRoute element={<UpdateDetails />} />}
-        />
-
-        <Route
-          path="/student/:id/exam"
-          element={<ProtectedRoute element={<ExamSelection />} />}
-        />
-      </Routes>
-    </Router>
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/student/:id/details" element={<UpdateDetails />} />
+            <Route path="/student/:id/exam" element={<ExamSelection />} />
+            <Route path="/student/:id/exam/:subjectId" element={<Exam />} />
+          </Route>
+        </Routes>
+      </Router>
+    </StudentProvider>
   );
 }
 

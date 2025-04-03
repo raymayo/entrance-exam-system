@@ -1,35 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useStudent } from "../context/StudentContext.jsx";
 
-const UpdateDetails = ({ studentId }) => {
+const UpdateDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  // const [id, setId] = useState("");
-
-  const [student, setStudent] = useState({
-    regNo: "",
-    email: "",
-    phone: "",
-    name: "",
-    gender: "",
-    address: "",
-    birthday: "",
-    birthplace: "",
-    guardian: "",
-    lastSchool: "",
-    lastSchoolAddress: "",
-    course1st: "",
-    course2nd: "",
-    transfereeCourse: "",
-    examDate: Date(),
-  });
+  const { student, setStudent } = useStudent(); // Use setStudent here
 
   const [errorMessage, setErrorMessage] = useState("");
+  const [key, setKey] = useState(id);
 
   useEffect(() => {
     if (!id) return;
-    // Fetch the student data
+
+    // Fetch the student data from the API
     const fetchStudentData = async () => {
       try {
         const response = await fetch(
@@ -37,31 +21,30 @@ const UpdateDetails = ({ studentId }) => {
         );
         const data = await response.json();
 
-        // setId(data._id);
+        console.log(data);
 
-        setStudent({
-          regNo: data.regNo,
-          email: data.email,
-          phone: data.phone,
-          name: data.name,
-          gender: "",
-          address: "",
-          birthday: "",
-          birthplace: "",
-          guardian: "",
-          lastSchool: "",
-          lastSchoolAddress: "",
-          course1st: "",
-          course2nd: "",
-          transfereeCourse: "",
-          examDate: "",
-        });
-
-        // Set the state with fetched data (null fields will stay empty)
         if (response.ok) {
+          setStudent({
+            regNo: data.regNo,
+            email: data.email,
+            phone: data.phone,
+            name: data.name,
+            gender: data.gender || "",
+            address: data.address || "",
+            birthday: data.birthday || "",
+            birthplace: data.birthplace || "",
+            guardian: data.guardian || "",
+            lastSchool: data.lastSchool || "",
+            lastSchoolAddress: data.lastSchoolAddress || "",
+            course1st: data.course1st || "",
+            course2nd: data.course2nd || "",
+            transfereeCourse: data.transfereeCourse || "",
+            examDate: data.examDate || "",
+          });
         } else {
           setErrorMessage("Error fetching student data");
-          // navigate("/entrance");
+          localStorage.removeItem("authUser"); // Remove authentication data
+          navigate("/entrance", { replace: true }); // Redirect to login page
         }
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -70,7 +53,7 @@ const UpdateDetails = ({ studentId }) => {
     };
 
     fetchStudentData();
-  }, [studentId]);
+  }, [id, setStudent, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,23 +65,28 @@ const UpdateDetails = ({ studentId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setErrorMessage(""); // Reset error message
     try {
       const response = await fetch(`/api/register/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(student),
       });
+
       if (!response.ok) throw new Error("Failed to update student");
       navigate("/students"); // Redirect after success
     } catch (err) {
-      setError(err.message);
+      setErrorMessage(err.message);
     }
   };
 
   const handleNavigate = () => {
-    navigate(`/student/${id}/exam`, { state: student });
+    navigate(`/student/${id}/exam`, { state: { student, key } });
   };
+
+  if (!student) {
+    return <div>Loading...</div>; // Show loading message until student data is fetched
+  }
 
   return (
     <div className="flex h-screen w-screen flex-col place-items-center">

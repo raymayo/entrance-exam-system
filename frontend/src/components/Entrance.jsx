@@ -2,25 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Entrance = () => {
-  const [regNo, setRegNo] = useState("");
-  const [password, setPassword] = useState("");
+  const [regNo, setRegNo] = useState("reg-1003");
+  const [password, setPassword] = useState("e4194681");
   const [errorMessage, setErrorMessage] = useState("");
-  const [auth, setAuth] = useState();
+  const [auth, setAuth] = useState(null);
 
   const navigate = useNavigate();
 
-  // Fetch student ID when regNo is valid (length >= 8)
+  // Fetch student data when regNo is valid (length >= 8)
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
         const response = await fetch(
           `http://localhost:5000/api/student/${regNo}`,
         );
+        if (!response.ok) throw new Error("Student not found");
+
         const data = await response.json();
         setAuth(data);
       } catch (error) {
         console.error("Error fetching student data:", error);
-        setErrorMessage("An error occurred while fetching the data");
+        setErrorMessage("Invalid registration number");
       }
     };
 
@@ -29,7 +31,7 @@ const Entrance = () => {
     }
   }, [regNo]);
 
-  // Handle form submission
+  // Handle login submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage(""); // Clear previous errors
@@ -42,16 +44,15 @@ const Entrance = () => {
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Invalid credentials");
-      }
+      if (!response.ok) throw new Error(data.message || "Invalid credentials");
 
       if (!auth) return;
 
+      // Store user session in localStorage
       localStorage.setItem("authUser", JSON.stringify(auth));
+
       alert("Login successful");
-      navigate(`/student/${auth._id}/details/`, { replace: true });
+      navigate(`/student/${auth._id}/details`, { replace: true });
     } catch (error) {
       console.error("Error during login:", error);
       setErrorMessage(error.message);
