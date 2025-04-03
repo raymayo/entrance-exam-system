@@ -1,15 +1,10 @@
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useStudent } from "../context/StudentContext.jsx";
 
 const ExamSelection = () => {
   const navigate = useNavigate();
-  const { student, setStudent } = useStudent(); // Use setStudent here
+  const { student } = useStudent(); // Use student context
   const { id } = useParams();
-
-  console.log(student);
-
-  // Using useEffect to avoid infinite re-renders
 
   const subjects = [
     {
@@ -43,6 +38,10 @@ const ExamSelection = () => {
     navigate(`/student/${id}/exam/${subjectId}`);
   };
 
+  if (!student) {
+    return <p>Loading student data...</p>; // Or show a fallback UI if student is not available
+  }
+
   return (
     <div className="flex h-screen w-screen flex-col items-center border p-8 lg:justify-center">
       <main className="grid h-full max-h-[400px] w-full gap-8 border border-red-500 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-5">
@@ -55,7 +54,8 @@ const ExamSelection = () => {
             {subject.name}
             <p>Score: {student.examScores[subject.id]}</p>
             <button
-              className="cursor-pointer rounded-lg border px-4 py-2"
+              className="cursor-pointer rounded-lg border px-4 py-2 disabled:bg-zinc-300 disabled:text-zinc-500"
+              disabled={student.examScores[subject.id] !== 0}
               onClick={() => handleStart(subject.id)}
             >
               Start
