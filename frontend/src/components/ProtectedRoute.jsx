@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
-  const isAuthenticated = localStorage.getItem("authUser") !== null;
+  const isAuthenticated = sessionStorage.getItem("authUser") !== null;
 
   console.log("Is Authenticated:", isAuthenticated); // Debugging log
 

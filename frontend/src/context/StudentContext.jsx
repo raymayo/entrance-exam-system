@@ -6,15 +6,15 @@ const StudentContext = createContext();
 // Provide context
 export const StudentProvider = ({ children }) => {
   const [student, setStudent] = useState(() => {
-    // Check localStorage on initial load
-    const storedStudent = localStorage.getItem("student");
+    // Check sessionStorage on initial load
+    const storedStudent = sessionStorage.getItem("student");
     return storedStudent ? JSON.parse(storedStudent) : null;
   });
 
   useEffect(() => {
-    // Persist the student data in localStorage whenever it changes
+    // Persist the student data in sessionStorage whenever it changes
     if (student) {
-      localStorage.setItem("student", JSON.stringify(student));
+      sessionStorage.setItem("student", JSON.stringify(student));
     }
   }, [student]);
 
