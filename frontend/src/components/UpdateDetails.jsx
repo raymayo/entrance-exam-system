@@ -97,8 +97,8 @@ const UpdateDetails = () => {
 
   return (
     <div className="grid h-screen w-screen place-items-center">
-      <div className="pattern rounded-md border p-4">
-        <div className="shadow-2 w-full max-w-4xl rounded-md border border-zinc-200 bg-white p-8">
+      <div className="pattern rounded-md border border-zinc-200 p-4 shadow-md">
+        <div className="w-full max-w-4xl rounded-md border border-zinc-200 bg-white p-8 shadow-2xs">
           <h1 className="mb-2 text-center text-xl font-semibold">
             Student Details
           </h1>
