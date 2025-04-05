@@ -56,7 +56,7 @@ const Registration = () => {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-6">
-      <div className="pattern w-full max-w-xl rounded-md border border-zinc-200 p-4 shadow-md">
+      <div className="pattern w-full max-w-xl rounded-md border border-zinc-200 p-1.5 shadow-md">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-2 rounded-md border border-zinc-200 bg-white p-6 shadow-2xs"

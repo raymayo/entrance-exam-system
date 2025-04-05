@@ -70,23 +70,6 @@ const UpdateDetails = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage(""); // Reset error message
-    try {
-      const response = await fetch(`/api/register/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(student),
-      });
-
-      if (!response.ok) throw new Error("Failed to update student");
-      navigate("/students"); // Redirect after success
-    } catch (err) {
-      setErrorMessage(err.message);
-    }
-  };
-
   const handleNavigate = () => {
     navigate(`/student/${id}/exam`, { state: { student, key } });
   };
@@ -97,7 +80,7 @@ const UpdateDetails = () => {
 
   return (
     <div className="grid h-screen w-screen place-items-center">
-      <div className="pattern rounded-md border border-zinc-200 p-4 shadow-md">
+      <div className="pattern rounded-md border border-zinc-200 p-1.5 shadow-md">
         <div className="w-full max-w-4xl rounded-md border border-zinc-200 bg-white p-8 shadow-2xs">
           <h1 className="mb-2 text-center text-xl font-semibold">
             Student Details

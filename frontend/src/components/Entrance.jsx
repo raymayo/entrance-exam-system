@@ -61,7 +61,7 @@ const Entrance = () => {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-8 lg:justify-center">
-      <div className="pattern flex h-full max-h-fit w-full max-w-xl flex-col gap-8 rounded-xl border border-zinc-200 p-4 text-center shadow-md">
+      <div className="pattern flex h-full max-h-fit w-full max-w-xl flex-col gap-8 rounded-xl border border-zinc-200 p-1.5 text-center shadow-md">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-6"
