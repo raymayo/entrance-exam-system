@@ -5,6 +5,7 @@ import Entrance from "./components/Entrance.jsx";
 import UpdateDetails from "./components/UpdateDetails.jsx";
 import ExamSelection from "./components/ExamSelection.jsx";
 import Exam from "./components/Exam.jsx";
+import Success from "./components/Success.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { StudentProvider } from "./context/StudentContext.jsx"; // Import your context provider
 
@@ -23,6 +24,7 @@ function App() {
             <Route path="/student/:id/details" element={<UpdateDetails />} />
             <Route path="/student/:id/exam" element={<ExamSelection />} />
             <Route path="/student/:id/exam/:subjectId" element={<Exam />} />
+            <Route path="/student/:id/success" element={<Success />} />
           </Route>
         </Routes>
       </Router>

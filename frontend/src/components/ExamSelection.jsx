@@ -12,6 +12,7 @@ const ExamSelection = () => {
   const navigate = useNavigate();
   const { student } = useStudent();
   const { id } = useParams();
+  const { logout } = useStudent();
 
   const subjects = [
     {
@@ -62,13 +63,12 @@ const ExamSelection = () => {
           examScores: student.examScores,
         }),
       });
+      navigate(`/student/${id}/success`);
 
       if (!response.ok) {
         const message = await response.text();
         throw new Error(message || "Failed to submit exam results.");
       }
-
-      // navigate("/success");
     } catch (err) {
       console.error("Submission error:", err.message);
       alert("Failed to save exam results. Try again.");

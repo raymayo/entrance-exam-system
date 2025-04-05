@@ -6,20 +6,24 @@ const StudentContext = createContext();
 // Provide context
 export const StudentProvider = ({ children }) => {
   const [student, setStudent] = useState(() => {
-    // Check sessionStorage on initial load
     const storedStudent = sessionStorage.getItem("student");
     return storedStudent ? JSON.parse(storedStudent) : null;
   });
 
   useEffect(() => {
-    // Persist the student data in sessionStorage whenever it changes
     if (student) {
       sessionStorage.setItem("student", JSON.stringify(student));
     }
   }, [student]);
 
+  // Logout clears state and sessionStorage
+  const logout = () => {
+    setStudent(null);
+    sessionStorage.removeItem("student");
+  };
+
   return (
-    <StudentContext.Provider value={{ student, setStudent }}>
+    <StudentContext.Provider value={{ student, setStudent, logout }}>
       {children}
     </StudentContext.Provider>
   );
