@@ -6,8 +6,6 @@ const Success = () => {
   const navigate = useNavigate();
   const { logout } = useStudent();
 
-  const handleLogout = () => {};
-
   const handleHome = () => {
     logout();
     console.log("logout");
@@ -52,10 +50,16 @@ const Success = () => {
         </p>
       </div>
       <div className="flex w-full justify-center gap-4">
-        <button className="w-fit cursor-pointer rounded-md border border-zinc-200 bg-white px-4 py-2 text-base font-medium text-zinc-900 shadow-2xs hover:bg-zinc-100 disabled:bg-zinc-300 disabled:text-zinc-500">
+        <button
+          onClick={handleHome}
+          className="w-fit cursor-pointer rounded-md border border-zinc-200 bg-white px-4 py-2 text-base font-medium text-zinc-900 shadow-2xs hover:bg-zinc-100 disabled:bg-zinc-300 disabled:text-zinc-500"
+        >
           Home
         </button>
-        <button className="bg-lima border-lima-500 hover:bg-lima-600 w-fit cursor-pointer rounded-md border px-4 py-2 text-base font-medium text-zinc-900 shadow-2xs disabled:bg-zinc-300 disabled:text-zinc-500">
+        <button
+          onClick={handleResultScanner}
+          className="bg-lima border-lima-500 hover:bg-lima-600 w-fit cursor-pointer rounded-md border px-4 py-2 text-base font-medium text-zinc-900 shadow-2xs disabled:bg-zinc-300 disabled:text-zinc-500"
+        >
           Result Scanner
         </button>
       </div>

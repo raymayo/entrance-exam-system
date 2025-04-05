@@ -6,6 +6,7 @@ import UpdateDetails from "./components/UpdateDetails.jsx";
 import ExamSelection from "./components/ExamSelection.jsx";
 import Exam from "./components/Exam.jsx";
 import Success from "./components/Success.jsx";
+import Scanner from "./components/CodeScanner.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { StudentProvider } from "./context/StudentContext.jsx"; // Import your context provider
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Registration />} />
           <Route path="/entrance" element={<Entrance />} />
           <Route path="/student/:id" element={<GenerateQR />} />
+          <Route path="/scanner" element={<Scanner />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
