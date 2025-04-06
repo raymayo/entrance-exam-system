@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStudent } from "../context/StudentContext.jsx";
 
@@ -7,19 +7,18 @@ const Exam = () => {
   const { student, setStudent } = useStudent();
   const navigate = useNavigate();
 
-  const score = 10;
+  // Random score between 30 and 45 (memoized so it doesn't change on every render)
+  const score = useMemo(
+    () => Math.floor(Math.random() * (45 - 30 + 1)) + 30,
+    [],
+  );
 
-  // Check if student data is available
-  if (!student) {
-    return;
-  }
+  if (!student) return;
 
-  // Early return if examScores is not available
   if (!student.examScores) {
     return <p>Loading or missing student exam data...</p>;
   }
 
-  // Redirect if the exam is already finished (score is set)
   useEffect(() => {
     if (student.examScores[subjectId] !== 0) {
       navigate(`/student/${id}/exam/`);
@@ -32,7 +31,6 @@ const Exam = () => {
       return;
     }
 
-    // Update the exam score
     setStudent((prevStudent) => ({
       ...prevStudent,
       examScores: {

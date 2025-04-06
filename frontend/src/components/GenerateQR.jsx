@@ -28,6 +28,8 @@ const GenerateQR = () => {
     fetchStudent();
   }, [id]);
 
+  console.log({ student });
+
   const handleDownload = useCallback(() => {
     if (!qrRef.current || !student) return;
 
@@ -54,11 +56,11 @@ const GenerateQR = () => {
         <div className="pattern flex h-fit w-full max-w-sm flex-col items-center gap-4 rounded-md p-4">
           <div className="flex w-full flex-col gap-2 rounded-md bg-white p-6">
             <QRCodeSVG
-              value={student?.id || "Loading..."}
+              value={student?._id || ""}
               className="h-full w-full rounded-md bg-white px-8 pt-8"
             />
             <h1 className="mt-4 text-center text-xl font-medium">
-              {student.name}
+              {student?.name || "Loading..."}
             </h1>
             {student ? (
               <div className="flex w-full flex-col items-center justify-center gap-4 bg-white p-2 text-center">
@@ -82,13 +84,13 @@ const GenerateQR = () => {
         </div>
       </div>
 
-      <button
+      {/* <button
         onClick={handleDownload}
         disabled={!student} // Prevents downloading when student data is not loaded
         className="mt-4 cursor-pointer rounded-md bg-zinc-900 px-4 py-2.5 text-sm font-medium text-zinc-100 hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
         Download as PNG
-      </button>
+      </button> */}
     </div>
   );
 };

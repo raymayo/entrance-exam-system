@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Registration />} />
           <Route path="/entrance" element={<Entrance />} />
           <Route path="/student/:id" element={<GenerateQR />} />
-          <Route path="/scanner" element={<Scanner />} />
+          <Route path="/scan" element={<Scanner />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
