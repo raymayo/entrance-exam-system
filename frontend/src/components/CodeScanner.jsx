@@ -87,8 +87,8 @@ const CodeScanner = () => {
                 >
                   <CircularProgressbar
                     className="font-semibold"
-                    value={(animatedScores[subject] / 20) * 100 || 0}
-                    text={`${score}/20`}
+                    value={(animatedScores[subject] / 50) * 100 || 0}
+                    text={`${score}/50`}
                     background={true}
                     styles={buildStyles({
                       pathColor: `rgba(8,207,108,1)`,

@@ -15,7 +15,7 @@ const Success = () => {
   const handleResultScanner = () => {
     logout();
     console.log("logout");
-    navigate(`/scanner`, { replace: true });
+    navigate(`/scan`, { replace: true });
   };
 
   return (

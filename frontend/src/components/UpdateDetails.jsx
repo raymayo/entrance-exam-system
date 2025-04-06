@@ -85,7 +85,7 @@ const UpdateDetails = () => {
           <h1 className="mb-2 text-center text-xl font-semibold">
             Student Details
           </h1>
-          <form onSubmit={handleSubmit} className="">
+          <form className="">
             <div className="grid w-full grid-cols-6 gap-x-2.5 gap-y-4">
               <label className="flex flex-col gap-1 text-sm font-medium">
                 Registration No.
