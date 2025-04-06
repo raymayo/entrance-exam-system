@@ -54,6 +54,18 @@ const CodeScanner = () => {
     return () => clearTimeout(timeout);
   }, [result]);
 
+  const getPathColor = (percentage) => {
+    if (percentage <= 50) return "rgba(255, 69, 58, 1)"; // Red for 0-50%
+    if (percentage <= 75) return "rgba(255,165,0,1.0)"; // Yellow for 51-75%
+    return "rgba(8, 207, 108, 1)"; // Green for 76-100%
+  };
+
+  const getBgColor = (percentage) => {
+    if (percentage <= 50) return "#FFEEEC"; // Red for 0-50%
+    if (percentage <= 75) return "#FFF6EB"; // Yellow for 51-75%
+    return "#EDFBF1"; // Green for 76-100%
+  };
+
   const hasValidResult =
     result?.name &&
     result?.examScores &&
@@ -76,32 +88,38 @@ const CodeScanner = () => {
 
         {hasValidResult && (
           <div className="mt-4 flex w-full flex-col rounded-lg border border-zinc-200 bg-white p-4 text-gray-700 shadow-2xs">
-            <h1 className="text-center text-xl font-medium">
+            <h1 className="text-center text-lg font-medium">
               {result.name} Results
             </h1>
             <div className="grid w-full grid-cols-5 text-center">
-              {Object.entries(result.examScores).map(([subject, score]) => (
-                <div
-                  key={subject}
-                  className="flex flex-col items-center justify-center gap-2 p-4"
-                >
-                  <CircularProgressbar
-                    className="font-semibold"
-                    value={(animatedScores[subject] / 50) * 100 || 0}
-                    text={`${score}/50`}
-                    background={true}
-                    styles={buildStyles({
-                      pathColor: `rgba(8,207,108,1)`,
-                      textColor: "#08CF6C",
-                      trailColor: "rgba(214,214,214,.0)",
-                      backgroundColor: "#EDFBF1",
-                      textSize: "1.4rem",
-                    })}
-                    pathTransitionDuration={1.5}
-                  />
-                  <h2 className="text-sm font-medium capitalize">{subject}</h2>
-                </div>
-              ))}
+              {Object.entries(result.examScores).map(([subject, score]) => {
+                const percentage = (animatedScores[subject] / 50) * 100 || 0;
+
+                return (
+                  <div
+                    key={subject}
+                    className="flex flex-col items-center justify-center gap-2 p-4"
+                  >
+                    <CircularProgressbar
+                      className="font-medium"
+                      value={percentage}
+                      text={`${score}/50`}
+                      background={true}
+                      styles={buildStyles({
+                        pathColor: getPathColor(percentage),
+                        textColor: getPathColor(percentage),
+                        trailColor: "rgba(214,214,214,.0)",
+                        backgroundColor: getBgColor(percentage),
+                        textSize: "1.4rem",
+                      })}
+                      pathTransitionDuration={1.5}
+                    />
+                    <h2 className="text-sm font-medium capitalize">
+                      {subject}
+                    </h2>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
