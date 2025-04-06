@@ -44,7 +44,7 @@ const Exam = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center p-8 transition-all duration-300 ease-in-out">
+    <div className="flex h-screen w-screen flex-col items-center justify-center p-8">
       <h1 className="text-2xl font-bold">{subjectId.toUpperCase()} Exam</h1>
       <p className="mt-4">This is the exam page for {subjectId}.</p>
       <p>
