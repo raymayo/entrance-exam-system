@@ -8,6 +8,7 @@ const UpdateDetails = () => {
   const { student, setStudent } = useStudent(); // Use setStudent here
 
   const [errorMessage, setErrorMessage] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [key, setKey] = useState(id);
 
   const submitStudentData = async () => {
@@ -89,8 +90,8 @@ const UpdateDetails = () => {
     console.log(student);
   };
 
-  const handleNavigate = () => {
-    submitStudentData();
+  const handleNavigate = async () => {
+    await submitStudentData();
     navigate(`/student/${id}/exam`, { state: { student, key } });
   };
 

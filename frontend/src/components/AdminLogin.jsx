@@ -27,7 +27,7 @@ const AdminLogin = () => {
         admin,
       );
       console.log(response.data);
-      alert("Login successful");
+      alert("Login successfully!");
 
       // Store user info in sessionStorage
       sessionStorage.setItem(
