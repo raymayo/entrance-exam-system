@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import { UsersRound, UserCheck, ChartLine, ChartPie } from "lucide-react";
 const TotalRegisteredStudent = () => {
   const [totalStudents, setTotalStudents] = useState(0);
   const [registeredStudent, setRegisteredStudents] = useState(0);
@@ -34,16 +35,38 @@ const TotalRegisteredStudent = () => {
   }, []);
 
   return (
-    <div className="rounded-lg bg-white p-4 shadow-md">
-      <div>
-        <h2 className="mb-4 text-lg font-semibold">Total Exam Takers</h2>
-        <p className="text-3xl font-bold">{totalStudents}</p>
+    <div className="flex w-full gap-4 rounded-lg bg-white">
+      <div className="w-full rounded-md border border-zinc-200 p-4 shadow-2xs">
+        <div className="flex gap-8">
+          <h2 className="mb-4 text-base font-medium">Total Exam Takers</h2>
+          <UsersRound size={25} />
+        </div>
+
+        <p className="text-4xl font-bold">{totalStudents}</p>
       </div>
-      <div>
-        <h2 className="mb-4 text-lg font-semibold">
-          Total Registered Examiners
-        </h2>
-        <p className="text-3xl font-bold">{registeredStudent}</p>
+      <div className="w-full rounded-md border border-zinc-200 p-4 shadow-2xs">
+        <div className="flex gap-8">
+          <h2 className="mb-4 text-base font-medium">
+            Total Registered Examiners
+          </h2>
+
+          <UserCheck size={25} />
+        </div>
+        <p className="text-4xl font-bold">{registeredStudent}</p>
+      </div>
+      <div className="w-full rounded-md border border-zinc-200 p-4 shadow-2xs">
+        <div className="flex gap-8">
+          <h2 className="mb-4 text-base font-medium">Dashboard Data 2</h2>
+          <ChartLine size={25} />
+        </div>
+        <p className="text-4xl font-bold">18</p>
+      </div>
+      <div className="w-full rounded-md border border-zinc-200 p-4 shadow-2xs">
+        <div className="flex gap-8">
+          <h2 className="mb-4 text-base font-medium">Dashboard Data 3</h2>
+          <ChartPie size={25} />
+        </div>
+        <p className="text-4xl font-bold">30</p>
       </div>
     </div>
   );

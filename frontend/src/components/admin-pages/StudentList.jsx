@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Plus, CalendarPlus } from "lucide-react";
+import { Eye, SquarePen } from "lucide-react";
 import Tooltip from "../admin-components/Tooltip";
 
 const StudentList = () => {
@@ -23,7 +23,8 @@ const StudentList = () => {
   }, []);
 
   return (
-    <div className="flex h-full w-full max-w-[1000px] flex-col gap-4">
+    <div className="flex h-full w-full flex-col gap-4">
+      <h1 className="w-full text-2xl font-semibold">Manage Students</h1>
       {/* <button
         className="flex cursor-pointer items-center gap-2 self-end rounded-md border border-zinc-300 bg-white px-3 py-2 text-xs font-medium"
         // onClick={() => setRegisterModalOpen(true)}
@@ -81,12 +82,20 @@ const StudentList = () => {
                 </td> */}
                 <td className="w-fit border-t border-zinc-300 px-4 py-3 text-left text-sm">
                   <div className="flex gap-2">
-                    <Tooltip text="Assign Schedule" position="top">
+                    <Tooltip text="View Student" position="top">
                       <button
                         // onClick={() => openModal(student)}
                         className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
                       >
-                        <CalendarPlus size={16} className="text-zinc-900" />
+                        <Eye size={16} className="text-zinc-900" />
+                      </button>
+                    </Tooltip>
+                    <Tooltip text="Edit Student" position="top">
+                      <button
+                        // onClick={() => openModal(student)}
+                        className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
+                      >
+                        <SquarePen size={16} className="text-zinc-900" />
                       </button>
                     </Tooltip>
                     {/* <button className="border border-zinc-300 rounded-md cursor-pointer">E</button>
@@ -144,7 +153,7 @@ export default StudentList;
 //               // onClick={() => openModal(student)}
 //               className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
 //             >
-//               <CalendarPlus size={16} className="text-zinc-900" />
+//               <SquarePen size={16} className="text-zinc-900" />
 //             </button>
 //           </Tooltip>
 //           {/* <button className="border border-zinc-300 rounded-md cursor-pointer">E</button>

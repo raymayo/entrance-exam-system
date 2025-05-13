@@ -11,6 +11,8 @@ import {
   BookMarked,
   FileUser,
   Layers,
+  FilePlus2,
+  FileSpreadsheet,
 } from "lucide-react";
 
 const DropdownMenu = ({ title, icon: Icon, children }) => {
@@ -111,7 +113,7 @@ const AdminSidebar = () => {
             }`
           }
         >
-          <FileUser size={20} /> Manage Exam
+          <FileSpreadsheet size={20} /> Manage Exam
         </NavLink>
 
         <NavLink
@@ -122,7 +124,7 @@ const AdminSidebar = () => {
             }`
           }
         >
-          <FileUser size={20} /> Create Exam
+          <FilePlus2 size={20} /> Create Exam
         </NavLink>
       </nav>
     </div>

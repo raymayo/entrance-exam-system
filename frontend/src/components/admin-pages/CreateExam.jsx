@@ -51,8 +51,9 @@ const CreateExam = () => {
         description,
         questions,
       });
+      alert("Exam created successfully");
 
-      navigate("/admin/exams");
+      navigate("/admin/exam-list");
     } catch (err) {
       setError(err.response?.data?.message || "Failed to create exam");
     } finally {
@@ -66,9 +67,11 @@ const CreateExam = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block font-medium">Title</label>
+          <label className="mb-1 flex flex-col gap-1 text-sm font-medium">
+            Title
+          </label>
           <input
-            className="rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
+            className="w-full rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
@@ -76,7 +79,9 @@ const CreateExam = () => {
         </div>
 
         <div>
-          <label className="block font-medium">Description</label>
+          <label className="mb-1 flex flex-col gap-1 text-sm font-medium">
+            Description
+          </label>
           <textarea
             className="w-full resize-none rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
             value={description}
@@ -99,7 +104,9 @@ const CreateExam = () => {
             </button>
 
             <div>
-              <label className="block font-medium">Question {index + 1}</label>
+              <label className="mb-1 flex flex-col gap-1 text-sm font-medium">
+                Question {index + 1}
+              </label>
               <input
                 className="w-full rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
                 value={q.questionText}
@@ -124,7 +131,9 @@ const CreateExam = () => {
               ))}
             </div>
             <div>
-              <label className="block font-medium">Correct Answer</label>
+              <label className="mb-1 flex flex-col gap-1 text-sm font-medium">
+                Correct Answer
+              </label>
               <select
                 className="rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
                 value={q.correctAnswer}
@@ -145,7 +154,7 @@ const CreateExam = () => {
         <button
           type="button"
           onClick={addQuestion}
-          className="cursor-pointer rounded bg-zinc-900 px-4 py-2 text-white hover:bg-zinc-800"
+          className="cursor-pointer rounded border border-zinc-200 bg-white px-4 py-2 text-sm text-black shadow-2xs transition-all duration-300 hover:bg-zinc-100"
         >
           + Add Question
         </button>
@@ -155,7 +164,7 @@ const CreateExam = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
+          className="w-full rounded bg-zinc-900 py-2 text-white hover:bg-zinc-800"
         >
           {loading ? "Creating..." : "Create Exam"}
         </button>
