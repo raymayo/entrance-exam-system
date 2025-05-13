@@ -10,6 +10,24 @@ const UpdateDetails = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [key, setKey] = useState(id);
 
+  const submitStudentData = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/register/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(student),
+      });
+
+      if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message || "Failed to update student data.");
+      }
+    } catch (error) {
+      console.error("Error updating student data:", error);
+      setErrorMessage("An error occurred while updating the data");
+    }
+  };
+
   useEffect(() => {
     if (!id) return;
 
@@ -58,7 +76,6 @@ const UpdateDetails = () => {
         setErrorMessage("An error occurred while fetching the data");
       }
     };
-
     fetchStudentData();
   }, [id, setStudent, navigate]);
 
@@ -68,9 +85,12 @@ const UpdateDetails = () => {
       ...prevState,
       [name]: value,
     }));
+
+    console.log(student);
   };
 
   const handleNavigate = () => {
+    submitStudentData();
     navigate(`/student/${id}/exam`, { state: { student, key } });
   };
 
@@ -144,17 +164,17 @@ const UpdateDetails = () => {
                 Sex
                 <select
                   className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
-                  name="genderSelect"
-                  id="genderSelect"
+                  name="gender"
+                  id="gender"
                   onChange={handleChange}
-                  value={student?.genderSelect || ""}
+                  value={student?.gender || ""}
                   required
                 >
                   <option value="" disabled>
                     Select Sex
                   </option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
+                  <option value="MALE">MALE</option>
+                  <option value="FEMALE">FEMALE</option>
                 </select>
               </label>
               <label className="col-span-6 flex flex-col gap-1 text-sm font-medium">
@@ -199,9 +219,9 @@ const UpdateDetails = () => {
                 <input
                   className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
                   type="text"
-                  name="guardianName"
+                  name="guardian"
                   placeholder="e.g. Juan Dela Cruz"
-                  value={student?.guardianName || ""}
+                  value={student?.guardian || ""}
                   onChange={handleChange}
                   required
                 />

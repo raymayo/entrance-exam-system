@@ -9,6 +9,7 @@ import Success from "./components/Success.jsx";
 import Scanner from "./components/CodeScanner.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { StudentProvider } from "./context/StudentContext.jsx"; // Import your context provider
+import AdminLogin from "./components/AdminLogin.jsx";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/entrance" element={<Entrance />} />
           <Route path="/student/:id" element={<GenerateQR />} />
           <Route path="/scan" element={<Scanner />} />
+          <Route path="/admin" element={<AdminLogin />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
