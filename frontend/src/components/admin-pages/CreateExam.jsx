@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CreateExam = () => {
   const navigate = useNavigate();
@@ -32,36 +33,42 @@ const CreateExam = () => {
     ]);
   };
 
+  const removeQuestion = (index) => {
+    if (questions.length === 1) return;
+    const updated = [...questions];
+    updated.splice(index, 1);
+    setQuestions(updated);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch("/api/exams", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, questions }),
+      await axios.post("http://localhost:5000/api/exams/", {
+        title,
+        description,
+        questions,
       });
 
-      if (!res.ok) throw new Error("Failed to create exam");
       navigate("/admin/exams");
     } catch (err) {
-      setError(err.message || "Unexpected error");
+      setError(err.response?.data?.message || "Failed to create exam");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="mx-auto mt-10 max-w-3xl rounded-lg border border-gray-200 bg-white p-6 shadow">
+    <div className="mx-auto w-full rounded-lg border border-gray-200 bg-white p-6 shadow">
       <h1 className="mb-6 text-2xl font-bold text-gray-800">Create Exam</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block font-medium">Title</label>
           <input
-            className="mt-1 w-full rounded border p-2"
+            className="rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
@@ -71,7 +78,7 @@ const CreateExam = () => {
         <div>
           <label className="block font-medium">Description</label>
           <textarea
-            className="mt-1 w-full rounded border p-2"
+            className="w-full resize-none rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
@@ -79,11 +86,22 @@ const CreateExam = () => {
         </div>
 
         {questions.map((q, index) => (
-          <div key={index} className="space-y-3 rounded border bg-gray-50 p-4">
+          <div
+            key={index}
+            className="relative space-y-3 rounded border border-gray-200 p-4"
+          >
+            <button
+              type="button"
+              onClick={() => removeQuestion(index)}
+              className="absolute top-2 right-2 text-sm text-red-600 hover:underline"
+            >
+              Remove
+            </button>
+
             <div>
               <label className="block font-medium">Question {index + 1}</label>
               <input
-                className="mt-1 w-full rounded border p-2"
+                className="w-full rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
                 value={q.questionText}
                 onChange={(e) =>
                   handleQuestionChange(index, "questionText", e.target.value)
@@ -95,7 +113,7 @@ const CreateExam = () => {
               {q.choices.map((choice, cIndex) => (
                 <input
                   key={cIndex}
-                  className="rounded border p-2"
+                  className="rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
                   value={choice}
                   placeholder={`Choice ${cIndex + 1}`}
                   onChange={(e) =>
@@ -108,7 +126,7 @@ const CreateExam = () => {
             <div>
               <label className="block font-medium">Correct Answer</label>
               <select
-                className="mt-1 w-full rounded border p-2"
+                className="rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
                 value={q.correctAnswer}
                 onChange={(e) =>
                   handleQuestionChange(index, "correctAnswer", e.target.value)
@@ -127,7 +145,7 @@ const CreateExam = () => {
         <button
           type="button"
           onClick={addQuestion}
-          className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+          className="cursor-pointer rounded bg-zinc-900 px-4 py-2 text-white hover:bg-zinc-800"
         >
           + Add Question
         </button>

@@ -1,24 +1,18 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
 
-const QuestionSchema = new Schema({
-
+const questionSchema = new mongoose.Schema({
     questionText: { type: String, required: true },
-    options: {
-        type: [string],
-        required: true,
-    },
-    correctAnswer: { type: String, required: true }
+    choices: [{ type: String, required: true }],
+    correctAnswer: { type: Number, required: true }, // Index of correct choice
 });
 
+const examSchema = new mongoose.Schema(
+    {
+        title: { type: String, required: true },
+        description: { type: String },
+        questions: [questionSchema],
+    },
+    { timestamps: true }
+);
 
-const ExamSchema = new Schema({
-    examName: { type: String, required: true, unique: true },
-    questions: [QuestionSchema]
-})
-
-
-
-const Exam = mongoose.model('Exam', ExamSchema);
-
-export default Exam;
+export default mongoose.model("Exam", examSchema);
