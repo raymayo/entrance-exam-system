@@ -4,6 +4,9 @@ import Tooltip from "../admin-components/Tooltip";
 
 const AdminList = () => {
   const [admins, setAdmins] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentAdmin, setCurrentAdmin] = useState(null);
+
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -21,6 +24,16 @@ const AdminList = () => {
 
     fetchStudents();
   }, []);
+
+  const openModal = (admin) => {
+    setCurrentAdmin(admin);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentAdmin(null);
+  };
 
   return (
     <div className="flex h-full w-full flex-col gap-4">
@@ -60,31 +73,31 @@ const AdminList = () => {
             </tr>
           </thead>
           <tbody>
-            {admins.map((student, index) => (
+            {admins.map((admin, index) => (
               <tr key={index}>
                 <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
                   {index + 1}
                 </td>
                 <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-                  {student.username}
+                  {admin.username}
                 </td>
                 <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-                  {student.password}
+                  {admin.password}
                 </td>
                 <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-                  {student.email}
+                  {admin.email}
                 </td>
                 <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-                  {student.phone}
+                  {admin.phone}
                 </td>
                 {/* <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-                  {student.yearLevel}
+                  {admin.yearLevel}
                 </td> */}
                 <td className="w-fit border-t border-zinc-300 px-4 py-3 text-left text-sm">
                   <div className="flex gap-2">
                     <Tooltip text="Edit Admin" position="top">
                       <button
-                        // onClick={() => openModal(student)}
+                        onClick={() => openModal(admin)}
                         className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
                       >
                         <SquarePen size={16} className="text-zinc-900" />
@@ -100,17 +113,74 @@ const AdminList = () => {
         </table>
       </div>
 
-      {/* Modal Component */}
-      {/* <ScheduleModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        student={selectedStudent}
-        schedules={schedules}
-      />
-      <StudentRegistrationModal
-        isOpen={isRegisterModalOpen}
-        onClose={() => setRegisterModalOpen(false)}
-      /> */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-zinc-900/75">
+          <div className="w-1/3 rounded-lg bg-white p-6">
+            <h2 className="mb-4 text-xl font-semibold">Edit Admin</h2>
+            <form>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  defaultValue={currentAdmin?.username}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                <input
+                  type="text"
+                  id="password"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  defaultValue={currentAdmin?.password}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  defaultValue={currentAdmin?.email}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Phone
+                </label>
+                <input
+                  type="text"
+                  id="phone"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  defaultValue={currentAdmin?.phone}
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="cursor-pointer rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="cursor-pointer rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -118,40 +188,3 @@ const AdminList = () => {
 export default AdminList;
 
 // {
-//   admins.map((student, index) => (
-//     <tr key={index}>
-//       <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-//         {index + 1}
-//       </td>
-//       <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-//         {student.studentId}
-//       </td>
-//       <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-//         {student.name}
-//       </td>
-//       <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-//         {student.email}
-//       </td>
-//       <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-//         {student.areaOfStudy}
-//       </td>
-//       <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
-//         {student.yearLevel}
-//       </td>
-//       <td className="w-fit border-t border-zinc-300 px-4 py-3 text-left text-sm">
-//         <div className="flex gap-2">
-//           <Tooltip text="Assign Schedule" position="top">
-//             <button
-//               // onClick={() => openModal(student)}
-//               className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
-//             >
-//               <SquarePen size={16} className="text-zinc-900" />
-//             </button>
-//           </Tooltip>
-//           {/* <button className="border border-zinc-300 rounded-md cursor-pointer">E</button>
-//                                         <button className="border border-zinc-300 rounded-md cursor-pointer">D</button> */}
-//         </div>
-//       </td>
-//     </tr>
-//   ));
-// }
