@@ -11,6 +11,9 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { StudentProvider } from "./context/StudentContext.jsx"; // Import your context provider
 import AdminLogin from "./components/AdminLogin.jsx";
 
+import AdminProtectedRoute from "./components/AdminProtectedRoute.jsx";
+import AdminPanel from "./pages/AdminPanel.jsx";
+
 function App() {
   return (
     <StudentProvider>
@@ -22,6 +25,10 @@ function App() {
           <Route path="/student/:id" element={<GenerateQR />} />
           <Route path="/scan" element={<Scanner />} />
           <Route path="/admin" element={<AdminLogin />} />
+
+          <Route element={<AdminProtectedRoute />}>
+            <Route path="/admin/*" element={<AdminPanel />} />
+          </Route>
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>

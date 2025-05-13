@@ -40,3 +40,38 @@ export const getStudentByRegNo = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+
+export const getAllStudents = async (req, res) => {
+    try {
+        const count = await Student.countDocuments({
+            expiresAt: { $exists: false }
+        });
+        res.status(200).json({ count });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getAllStudentData = async (req, res) => {
+    try {
+        const students = await Student.find({
+            expiresAt: { $exists: false }
+        })
+        res.status(200).json(students);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+export const getRegisteredStudent = async (req, res) => {
+    try {
+        const count = await Student.countDocuments({
+            expiresAt: { $exists: true }
+        });
+        res.status(200).json({ count });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
