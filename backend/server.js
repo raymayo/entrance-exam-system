@@ -22,7 +22,7 @@ app.use('/api/admin', adminRoutes)
 app.use("/api/exams", examRoute);
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect('mongodb://localhost:27017/entrance-exam')
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error(err));
 

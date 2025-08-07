@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { Eye, SquarePen } from "lucide-react";
+import { Eye, SquarePen, Printer } from "lucide-react";
 import Tooltip from "../admin-components/Tooltip";
+import PrintPage from "./PrintPage.jsx";
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -111,8 +113,7 @@ const StudentList = () => {
                         <SquarePen size={16} className="text-zinc-900" />
                       </button>
                     </Tooltip>
-                    {/* <button className="border border-zinc-300 rounded-md cursor-pointer">E</button>
-                                        <button className="border border-zinc-300 rounded-md cursor-pointer">D</button> */}
+                    <PrintPage student={student} />
                   </div>
                 </td>
               </tr>
