@@ -9,33 +9,35 @@ const PrintOutput = React.forwardRef(({ student }, ref) => {
     flexDirection: "column",
   };
 
-  const headerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "1rem",
-    justifyContent: " center",
-  };
+  function formatDay(dateString) {
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${month}-${day}-${year}`;
+  }
 
   console.log(student);
 
   return (
     <div
       ref={ref}
-      style={containerStyle}
-      className="bg-white p-8 text-sm text-black"
+      // style={containerStyle}
+      className="print-scale-content m-8 bg-white text-sm text-black"
     >
-      <header style={headerStyle} className="mb-4 flex items-center gap-4">
-        <img
-          className="w-12"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiqAW5DZhfWVqYlFU0p6Gqh5hfqzJTwi1BLw&s"
-          alt="School Logo"
-        />
-        <div>
-          <h1 className="text-2xl font-semibold uppercase">
+      <header className="relative mb-4 flex items-center justify-center gap-4">
+        <div className="text-center">
+          <h1 className="relative flex items-center text-3xl font-semibold uppercase">
+            <img
+              className="absolute left-[-4.5rem] w-14"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiqAW5DZhfWVqYlFU0p6Gqh5hfqzJTwi1BLw&s"
+              alt="School Logo"
+            />
             Kolehiyo Ng Subic
           </h1>
-          <span className="text-sm">Subic, Zambales</span>
+          <span className="-mt-2 mb-4 w-full text-center text-sm">
+            Subic, Zambales
+          </span>
         </div>
       </header>
 
@@ -48,7 +50,9 @@ const PrintOutput = React.forwardRef(({ student }, ref) => {
         <p className="col-span-2">Sex: {student.gender}</p>
         <p className="col-span-8">Address: {student.address}</p>
         <p className="col-span-3">Place of Birth: {student.birthplace}</p>
-        <p className="col-span-5">Date of Birth: {student.birthday}</p>
+        <p className="col-span-5">
+          Date of Birth: {formatDay(student.birthday)}
+        </p>
         <p className="col-span-3">Contact Number: {student.phone}</p>
         <p className="col-span-5">Name Of Guardian: {student.guardian}</p>
         <p className="col-span-8">School Last Attended: {student.lastSchool}</p>
@@ -100,24 +104,23 @@ const PrintOutput = React.forwardRef(({ student }, ref) => {
         </div>
       </div>
 
-      <section className="grid grid-cols-8 border-b border-dashed py-4">
-        <div className="col-start-6 col-end-8 text-center">
+      <section className="grid grid-cols-10 border-b border-dashed py-4">
+        <div className="col-start-8 col-end-11 text-center">
           <h1 className="border-b font-semibold">Ms. Thelma Laxamana</h1>
           <p>Registrar</p>
         </div>
       </section>
 
       <div className="my-4">
-        <h1 className="text-right">DATE: {student.createdAt}</h1>
+        <h1 className="text-right">DATE: {formatDay(student.createdAt)}</h1>
         <p>
           Mr./Ms {student.name} is granted to take the Entrance Examination on{" "}
-          {student.createdAt}
-          at COMLAB2
+          {formatDay(student.createdAt)} at COMLAB2
         </p>
       </div>
 
-      <section className="grid grid-cols-8 py-4">
-        <div className="col-start-6 col-end-8 text-center">
+      <section className="grid grid-cols-10 py-4">
+        <div className="col-start-8 col-end-11 text-center">
           <h1 className="border-b font-semibold">Ms. Thelma Laxamana</h1>
           <p>Registrar</p>
         </div>
@@ -163,8 +166,8 @@ const PrintOutput = React.forwardRef(({ student }, ref) => {
         </div>
       </div>
 
-      <section className="grid grid-cols-8 pt-10">
-        <div className="col-start-6 col-end-8 text-center">
+      <section className="grid grid-cols-10 pt-10">
+        <div className="col-start-8 col-end-11 text-center">
           <h1 className="border-b font-semibold">&nbsp;</h1>
           <p>Signature</p>
         </div>

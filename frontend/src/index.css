@@ -99,6 +99,24 @@
   }
 }
 
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .print-scale-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .print-scale-content {
+    transform: scale(1); /* Adjust scale */
+    transform-origin: center center;
+  }
+}
+
 /* a {
 	font-weight: 500;
 	color: #646cff;
