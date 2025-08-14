@@ -43,11 +43,7 @@ const StudentSchema = new mongoose.Schema(
             socialstudies: { type: Number, min: 0, default: null },
         },
 
-        expiresAt: {
-            type: Date,
-            expires: '30d',
-            default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        },
+
     },
     { timestamps: true }
 );

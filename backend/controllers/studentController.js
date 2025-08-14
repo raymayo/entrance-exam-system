@@ -56,7 +56,6 @@ export const getAllStudents = async (req, res) => {
 export const getAllStudentData = async (req, res) => {
     try {
         const students = await Student.find({
-            expiresAt: { $exists: false }
         })
         res.status(200).json(students);
     } catch (error) {
@@ -81,10 +80,7 @@ export const editStudent = async (req, res) => {
     try {
         const student = await Student.findOneAndUpdate(
             { regNo },
-            {
-                ...updateData,
-                $unset: { expiredAt: "" } // removes the expiredAt field
-            },
+            updateData,
             { new: true }
         );
 
@@ -96,4 +92,5 @@ export const editStudent = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-};
+}
+

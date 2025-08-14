@@ -12,18 +12,19 @@ const StudentList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/student");
-        if (!response.ok) throw new Error("Failed to fetch students");
-        const data = await response.json();
-        setStudents(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     fetchStudents();
   }, []);
+
+  const fetchStudents = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/student");
+      if (!response.ok) throw new Error("Failed to fetch students");
+      const data = await response.json();
+      setStudents(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const saveStudentDetails = async (updatedStudent) => {
     try {
@@ -42,7 +43,7 @@ const StudentList = () => {
       alert("Student details saved successfully!");
 
       setIsEditModalOpen(false) // Close modal
-      // Optional: refresh your list of students
+      fetchStudents();
     } catch (error) {
       console.error(error);
       alert("Error saving student details.");
