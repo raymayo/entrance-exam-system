@@ -10,13 +10,13 @@ const AdminDashboard = () => {
       <h1 className="text-2xl font-semibold">Dashboard</h1>
       <TotalRegisteredStudent />
       <div className="flex w-full gap-4">
-        <div className="rounded-md border border-zinc-200 p-4 shadow-2xs">
+        {/* <div className="rounded-md border border-zinc-200 p-4 shadow-2xs">
           <LineChartComponent />
-        </div>
+        </div> */}
         <div className="rounded-md border border-zinc-200 p-4 shadow-2xs">
           <PieChartComponent />
         </div>
-        <div>
+        <div className="rounded-md border border-zinc-200 p-4 shadow-2xs">
           <FinalGradeChart />
         </div>
       </div>
