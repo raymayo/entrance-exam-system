@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import dayjs from "dayjs";
 
 // Tailwind "variables" for reuse
-const labelStyle = "text-xs font-medium text-zinc-500";
+const labelStyle = "text-xs font-medium text-zinc-500 flex flex-col";
 const inputStyle =
-  "rounded-md border border-zinc-200 px-3 py-2 text-sm shadow-2xs focus:border-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-300";
+  "rounded-md border border-zinc-200 px-3 py-2 font-base text-sm shadow-2xs focus:border-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-300 text-black";
 const scoreStyle =
   "border p-2 rounded-md border-zinc-200 bg-white shadow-2xs flex flex-col text-xs text-zinc-500";
 const btnPrimary =
@@ -58,20 +58,14 @@ const EditStudentModal = ({ student, isOpen, onClose, onSave }) => {
             ].map(([field, label, type]) => (
               <label key={field} className={labelStyle}>
                 {label}
-                {type === "textarea" ? (
-                  <textarea
-                    value={formData[field] || ""}
-                    onChange={(e) => handleChange(field, e.target.value)}
-                    className={`${inputStyle} mt-1 h-20`}
-                  />
-                ) : (
                   <input
                     type={type || "text"}
                     value={formData[field] || ""}
                     onChange={(e) => handleChange(field, e.target.value)}
                     className={`${inputStyle} mt-1`}
+                    placeholder="N/A"
                   />
-                )}
+                
               </label>
             ))}
           </div>

@@ -1,13 +1,6 @@
 import React from "react";
 
 const PrintOutput = React.forwardRef(({ student }, ref) => {
-  const containerStyle = {
-    width: "816px",
-    height: "1344px",
-    padding: "1rem",
-    display: "flex",
-    flexDirection: "column",
-  };
 
   function formatDay(dateString) {
     const date = new Date(dateString);
@@ -20,10 +13,13 @@ const PrintOutput = React.forwardRef(({ student }, ref) => {
   console.log(student);
 
   return (
+    <div ref={ref}  className="grid place-items-center px-6 pt-6">
+
+
     <div
-      ref={ref}
+     
       // style={containerStyle}
-      className="print-scale-content m-8 bg-white text-sm text-black"
+      className="print-scale-content bg-white text-sm text-black grid test justify-between"
     >
       <header className="relative mb-4 flex items-center justify-center gap-4">
         <div className="text-center">
@@ -180,6 +176,7 @@ const PrintOutput = React.forwardRef(({ student }, ref) => {
           <p>Guidance Counselor</p>
         </div>
       </section>
+    </div>
     </div>
   );
 });
