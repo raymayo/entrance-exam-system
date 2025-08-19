@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import CreateAdmin from "../admin-pages/CreateAdmin.jsx";
 import AdminDashboard from "../admin-pages/AdminDashboard.jsx";
 import StudentList from "../admin-pages/StudentList.jsx";
 import AdminList from "../admin-pages/AdminList.jsx";
@@ -10,7 +9,6 @@ import CreateExam from "../admin-pages/CreateExam.jsx";
 const AdminRoutes = () => {
   return (
     <Routes>
-      <Route path="/create" element={<CreateAdmin />} />
       <Route path="/dashboard" element={<AdminDashboard />} />
       <Route path="/students" element={<StudentList />} />
       <Route path="/admin-list" element={<AdminList />} />

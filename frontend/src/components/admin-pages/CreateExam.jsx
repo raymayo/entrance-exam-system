@@ -5,7 +5,6 @@ import axios from "axios";
 const CreateExam = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [questions, setQuestions] = useState([
     { questionText: "", choices: ["", "", "", ""], correctAnswer: 0 },
   ]);
@@ -48,7 +47,6 @@ const CreateExam = () => {
     try {
       await axios.post("http://localhost:5000/api/exams/", {
         title,
-        description,
         questions,
       });
       alert("Exam created successfully");
@@ -78,17 +76,7 @@ const CreateExam = () => {
           />
         </div>
 
-        <div>
-          <label className="mb-1 flex flex-col gap-1 text-sm font-medium">
-            Description
-          </label>
-          <textarea
-            className="w-full resize-none rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
+
 
         {questions.map((q, index) => (
           <div
