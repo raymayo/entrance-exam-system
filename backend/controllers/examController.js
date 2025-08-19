@@ -10,6 +10,18 @@ export const createExam = async (req, res) => {
     }
 };
 
+export const getExam = async (req, res) => {
+    try{
+        const exam = await Exam.findById(req.params.id);
+        if (!exam) {
+            return res.status(404).json({ message: "Exam not found" });
+        }
+        res.status(200).json(exam); 
+    }catch (error) {
+        res.status(500).json({ message: "Failed to fetch exam", error: error.message });
+    }
+}
+
 
 export const getAllExam = async (req, res) => {
     try {

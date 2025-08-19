@@ -1,25 +1,39 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Tooltip from "../admin-components/Tooltip.jsx";
-import { SquarePen, Eye } from "lucide-react";
+import { SquarePen, Eye, Edit } from "lucide-react";
+import EditExamModal from "./EditExamModal.jsx";
 
 const ManageExam = () => {
   const [exams, setExams] = useState([]);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedExam, setSelectedExam] = useState(null); 
+
+  const openEditModal = (selectedExam) => {
+    setSelectedExam(selectedExam);
+    setEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setSelectedExam(null);
+    setEditModalOpen(false);
+  }
+
+  const fetchExams = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/exams/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const data = await response.json();
+      console.log(data);
+      setExams(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchExams = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/exams/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch students");
-        }
-        const data = await response.json();
-        console.log(data);
-        setExams(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
     fetchExams();
   }, []);
@@ -63,7 +77,7 @@ const ManageExam = () => {
                   <div className="flex gap-2">
                     <Tooltip text="View Exam" position="top">
                       <button
-                        // onClick={() => openModal(student)}
+                    
                         className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
                       >
                         <Eye size={16} className="text-zinc-900" />
@@ -71,7 +85,7 @@ const ManageExam = () => {
                     </Tooltip>
                     <Tooltip text="Edit Exam" position="top">
                       <button
-                        // onClick={() => openModal(student)}
+                        onClick={() => openEditModal(exam._id)}
                         className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
                       >
                         <SquarePen size={16} className="text-zinc-900" />
@@ -86,6 +100,13 @@ const ManageExam = () => {
           </tbody>
         </table>
       </div>
+
+      <EditExamModal
+        isOpen={editModalOpen}
+        onClose={closeEditModal}
+        exam={selectedExam}
+        onUpdate={fetchExams}
+      />
     </div>
   );
 };
