@@ -102,9 +102,9 @@ const ManageExam = () => {
       </div>
 
       <EditExamModal
+        examId={selectedExam}
         isOpen={editModalOpen}
         onClose={closeEditModal}
-        exam={selectedExam}
         onUpdate={fetchExams}
       />
     </div>
