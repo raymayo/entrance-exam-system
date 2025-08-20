@@ -36,15 +36,19 @@ const StudentSchema = new mongoose.Schema(
 
         // Exam scores as an object
         examScores: {
-            english: { type: Number, min: 0, default: null },
-            filipino: { type: Number, min: 0, default: null },
-            math: { type: Number, min: 0, default: null },
-            science: { type: Number, min: 0, default: null },
-            socialstudies: { type: Number, min: 0, default: null },
-        },
+            type: Map,
+            of: Number,
+            default: {
+                english: null,
+                filipino: null,
+                math: null,
+                science: null,
+                socialstudies: null,
+        }
 
 
-    },
+    }      
+  },
     { timestamps: true }
 );
 

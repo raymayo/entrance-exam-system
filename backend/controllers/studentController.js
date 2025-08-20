@@ -8,17 +8,16 @@ export const removeExpiresAtOnLogin = async (req, res) => {
 
         // Compare password directly if it's stored as plain text
         if (student && password === student.password) {
-            // If the expiresAt field exists, remove it
-            if (student.expiresAt) {
-                console.log('Before deleting expiresAt:', student.expiresAt);
-                await Student.updateOne(
-                    { regNo },
-                    { $unset: { expiresAt: "" } } // This removes the expiresAt field
-                );
-                console.log('After deleting expiresAt:', student.expiresAt);
-            } else {
-                console.log('No expiresAt field to delete.');
-            }
+            // if (student.expiresAt) {
+            //     console.log('Before deleting expiresAt:', student.expiresAt);
+            //     await Student.updateOne(
+            //         { regNo },
+            //         { $unset: { expiresAt: "" } } // This removes the expiresAt field
+            //     );
+            //     console.log('After deleting expiresAt:', student.expiresAt);
+            // } else {
+            //     console.log('No expiresAt field to delete.');
+            // }
 
             res.status(200).json({ message: 'Login successful.' });
         } else {

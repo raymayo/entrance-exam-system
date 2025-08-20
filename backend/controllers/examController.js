@@ -55,3 +55,17 @@ export const deleteExam = async (req, res) => {
         res.status(500).json({ message: "Failed to delete exam", error: error.message });
     }
 }
+
+
+export const getExamByTitle = async (req, res) => {
+    try{
+        const { title } = req.params;
+        const exam = await Exam.findOne({ title: title });
+        if (!exam) {
+            return res.status(404).json({ message: "Exam not found" });
+        }
+        res.status(200).json(exam); 
+    }catch(error){
+        res.status(500).json({ message: "Failed to fetch exam by title", error: error.message });
+    }
+}

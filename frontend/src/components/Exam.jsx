@@ -1,63 +1,98 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStudent } from "../context/StudentContext.jsx";
+import axios from "axios";
 
 const Exam = () => {
   const { id, subjectId } = useParams();
   const { student, setStudent } = useStudent();
   const navigate = useNavigate();
 
-  // Random score between 30 and 45 (memoized so it doesn't change on every render)
-  const score = useMemo(
-    () => Math.floor(Math.random() * (45 - 30 + 1)) + 30,
-    [],
-  );
+  const [exam, setExam] = useState(null);
+  const [answers, setAnswers] = useState({}); // { questionIndex: choiceIndex }
 
-  if (!student) return;
-
-  if (!student.examScores) {
-    return <p>Loading or missing student exam data...</p>;
-  }
-
+  // Fetch exam details
   useEffect(() => {
-    if (student.examScores[subjectId] !== 0) {
+    if (!subjectId) return;
+
+    axios
+      .get(`http://localhost:5000/api/exams/title/${subjectId}`)
+      .then((res) => setExam(res.data))
+      .catch((err) => console.error("Failed to fetch exam:", err));
+  }, [subjectId]);
+
+  // Prevent retake if student already has score
+  useEffect(() => {
+    const existingScore = student?.examScores?.[subjectId] ?? 0;
+    if (existingScore !== 0) {
       navigate(`/student/${id}/exam/`);
     }
   }, [student, subjectId, id, navigate]);
 
-  const submitScore = () => {
-    if (typeof subjectId !== "string" || !(subjectId in student.examScores)) {
-      console.error("Invalid subjectId:", subjectId);
-      return;
-    }
+  if (!student) return null;
+  if (!student.examScores) return <p>Loading student exam data...</p>;
 
-    setStudent((prevStudent) => ({
-      ...prevStudent,
-      examScores: {
-        ...prevStudent.examScores,
-        [subjectId]: score,
-      },
+  const handleAnswerChange = (questionIndex, choiceIndex) => {
+    setAnswers((prev) => ({ ...prev, [questionIndex]: choiceIndex }));
+  };
+
+  const submitExam = () => {
+    if (!exam?.questions) return;
+
+    const correctCount = exam.questions.reduce(
+      (count, q, idx) => (answers[idx] === q.correctAnswer ? count + 1 : count),
+      0
+    );
+
+    setStudent((prev) => ({
+      ...prev,
+      examScores: { ...prev.examScores, [subjectId]: correctCount },
     }));
 
-    console.log(`Updated ${subjectId} score to: ${score}`);
+    console.log(`Updated ${subjectId} score to: ${correctCount} correct answers`);
     navigate(`/student/${id}/exam/`);
   };
 
+
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center p-8">
+    <div className="flex h-screen w-screen flex-col items-center justify-center p-8 overflow-y-auto">
       <h1 className="text-2xl font-bold">{subjectId.toUpperCase()} Exam</h1>
-      <p className="mt-4">This is the exam page for {subjectId}.</p>
-      <p>
-        Test: your score in {subjectId} is{" "}
-        {student.examScores[subjectId] ?? "Not yet set"}
-      </p>
-      <button
-        className="cursor-pointer rounded-md bg-zinc-900 px-4 py-2 text-sm text-white disabled:bg-zinc-500"
-        onClick={submitScore}
-        disabled={student.examScores[subjectId] !== 0}
-      >
-        Set Score to {score}
-      </button>
+
+      {exam ? (
+        <div className="mt-6 w-full max-w-2xl space-y-6">
+          {exam.questions.map((q, qIdx) => (
+            <div key={q._id?.$oid || qIdx} className="rounded-lg border p-4 shadow">
+              <p className="font-medium">{q.questionText}</p>
+              <div className="mt-2 space-y-2">
+                {q.choices.map((choice, cIdx) => (
+                  <label
+                    key={cIdx}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name={`question-${qIdx}`}
+                      value={cIdx}
+                      checked={answers[qIdx] === cIdx}
+                      onChange={() => handleAnswerChange(qIdx, cIdx)}
+                    />
+                    <span>{choice}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          <button
+            className="mt-6 w-full rounded-md bg-zinc-900 px-4 py-2 text-sm text-white disabled:bg-zinc-500"
+            onClick={submitExam}
+          >
+            Submit Exam
+          </button>
+        </div>
+      ) : (
+        <p className="mt-4">Loading exam details...</p>
+      )}
     </div>
   );
 };

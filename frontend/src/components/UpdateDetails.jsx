@@ -60,11 +60,11 @@ const UpdateDetails = () => {
             transfereeCourse: data.transfereeCourse || "",
             examDate: data.examDate || "",
             examScores: {
-              english: 0,
-              filipino: 0,
-              math: 0,
-              science: 0,
-              socialstudies: 0,
+              english: null,
+              filipino: null,
+              math: null,
+              science: null,
+              socialstudies: null,
             },
           });
         } else {
