@@ -73,8 +73,8 @@ const StudentList = () => {
   return (
     <div className="flex h-full w-full flex-col gap-4">
       <h1 className="w-full text-2xl font-semibold">Manage Students</h1>
-      <div className="h-fit rounded-md border border-zinc-300 bg-white">
-        <table className="h-full w-full">
+      <div className="h-full rounded-md border border-zinc-300 bg-white">
+        <table className="h-fit w-full overflow-y-auto">
           <thead>
             <tr>
               <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">#</th>
@@ -88,12 +88,12 @@ const StudentList = () => {
           <tbody>
             {students.map((student, index) => (
               <tr key={index}>
-                <td className="border-t border-zinc-300 px-4 py-3">{index + 1}</td>
-                <td className="border-t border-zinc-300 px-4 py-3">{student.regNo}</td>
-                <td className="border-t border-zinc-300 px-4 py-3">{student.name}</td>
-                <td className="border-t border-zinc-300 px-4 py-3">{student.email}</td>
-                <td className="border-t border-zinc-300 px-4 py-3">{student.phone}</td>
-                <td className="w-fit border-t border-zinc-300 px-4 py-3">
+                <td className="border-y border-zinc-300/50 px-4 py-3">{index + 1}</td>
+                <td className="border-y border-zinc-300/50 px-4 py-3">{student.regNo}</td>
+                <td className="border-y border-zinc-300/50 px-4 py-3">{student.name}</td>
+                <td className="border-y border-zinc-300/50 px-4 py-3">{student.email}</td>
+                <td className="border-y border-zinc-300/50 px-4 py-3">{student.phone}</td>
+                <td className="w-fit border-y border-zinc-300/50 px-4 py-3">
                   <div className="flex gap-2">
                     <Tooltip text="View Student" position="top">
                       <button

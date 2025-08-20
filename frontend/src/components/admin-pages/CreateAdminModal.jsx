@@ -104,7 +104,7 @@ const CreateAdminModal = ({isOpen, onClose}) => {
                               onChange={handleChange}
                           />
                       </label>
-                      <label className="flex flex-col gap-1.5 text-left">
+                      {/* <label className="flex flex-col gap-1.5 text-left">
                           Role
                           <input
                               className="rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
@@ -114,7 +114,7 @@ const CreateAdminModal = ({isOpen, onClose}) => {
                               name="role"
                               disabled
                           />
-                      </label>
+                      </label> */}
                       <button className="mt-6 cursor-pointer rounded-md border bg-zinc-900 p-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800">
                           Create Admin
                       </button>

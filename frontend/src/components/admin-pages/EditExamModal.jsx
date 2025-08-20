@@ -154,7 +154,7 @@ const EditExamModal = ({ examId, isOpen, onClose, onUpdated }) => {
                     + Add Question
                 </button>
                     </div>
-                <form onSubmit={handleSubmit} className="space-y-6 overflow-y-auto h-full">
+                <form onSubmit={handleSubmit} id="examUpdateForm" className="space-y-6 overflow-y-auto h-full">
                     <div>
                         <label className="mb-1 flex flex-col gap-1 text-sm font-medium">Title</label>
                         <input
@@ -192,6 +192,7 @@ const EditExamModal = ({ examId, isOpen, onClose, onUpdated }) => {
                     </button>
                     <button
                         type="submit"
+                        form="examUpdateForm"
                         disabled={loading}
                         className="rounded bg-zinc-900 px-4 py-2 text-sm text-white hover:bg-zinc-800"
                     >

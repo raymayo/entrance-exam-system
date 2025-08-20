@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Entrance = () => {
-  const [regNo, setRegNo] = useState("reg-1003");
-  const [password, setPassword] = useState("e4194681");
+  const [regNo, setRegNo] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [auth, setAuth] = useState(null);
 

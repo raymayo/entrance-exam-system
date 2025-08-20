@@ -7,7 +7,7 @@ const data = [
   { name: "Business Administration Dept", value: 245 },
 ];
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ["#6A4C93", "#E63946", "#118AB2", "#FFD166"];
 
 export default function PieChartComponent() {
   return (

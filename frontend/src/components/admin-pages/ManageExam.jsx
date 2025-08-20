@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Tooltip from "../admin-components/Tooltip.jsx";
-import { SquarePen, Eye, Edit } from "lucide-react";
+import { SquarePen, Eye, Trash } from "lucide-react";
 import EditExamModal from "./EditExamModal.jsx";
 
 const ManageExam = () => {
@@ -89,6 +89,14 @@ const ManageExam = () => {
                         className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
                       >
                         <SquarePen size={16} className="text-zinc-900" />
+                      </button>
+                    </Tooltip>
+                    <Tooltip text="Delete Exam" position="top">
+                      <button
+
+                        className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
+                      >
+                        <Trash size={16} className="text-red-500" />
                       </button>
                     </Tooltip>
                     {/* <button className="border border-zinc-300 rounded-md cursor-pointer">E</button>

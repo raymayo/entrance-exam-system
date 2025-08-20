@@ -10,6 +10,8 @@ const scoreStyle =
 const btnPrimary =
   "cursor-pointer rounded-md bg-zinc-800 px-4 py-2 text-sm text-white hover:bg-zinc-700";
 
+
+
 const EditStudentModal = ({ student, isOpen, onClose, onSave }) => {
   if (!isOpen || !student) return null;
 
@@ -98,7 +100,7 @@ const EditStudentModal = ({ student, isOpen, onClose, onSave }) => {
         </div>
 
         <div className="mt-6 flex justify-end gap-2">
-          <button onClick={onClose} className={btnPrimary}>
+          <button onClick={onClose} className='cursor-pointer rounded-md bg-zinc-200 px-4 py-2 text-sm text-black hover:bg-zinc-300'>
             Close
           </button>
           <button

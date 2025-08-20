@@ -13,10 +13,10 @@ const AdminDashboard = () => {
         {/* <div className="rounded-md border border-zinc-200 p-4 shadow-2xs">
           <LineChartComponent />
         </div> */}
-        <div className="rounded-md border border-zinc-200 p-4 shadow-2xs">
+        <div className="rounded-md border border-zinc-200 p-4 shadow-2xs w-full grid place-items-center">
           <PieChartComponent />
         </div>
-        <div className="rounded-md border border-zinc-200 p-4 shadow-2xs">
+        <div className="rounded-md border border-zinc-200 p-4 shadow-2xs w-full grid place-items-center">
           <FinalGradeChart />
         </div>
       </div>
