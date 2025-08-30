@@ -52,7 +52,7 @@ const Registration = () => {
       setError(err.message);
     }
   };
-  console.log(formData);
+
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-6">

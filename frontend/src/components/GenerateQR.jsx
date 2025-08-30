@@ -28,8 +28,6 @@ const GenerateQR = () => {
     fetchStudent();
   }, [id]);
 
-  console.log({ student });
-
   const handleDownload = useCallback(() => {
     if (!qrRef.current || !student) return;
 
@@ -37,7 +35,7 @@ const GenerateQR = () => {
       .then((dataUrl) => {
         const link = document.createElement("a");
         link.href = dataUrl;
-        link.download = `student_qr_${student.regNo || "unknown"}.png`;
+        link.download = `entrance_exam_qrid_${student.name || "unknown"}.png`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -46,6 +44,16 @@ const GenerateQR = () => {
         console.error("Error generating QR image:", error);
       });
   }, [student]);
+
+  // 🔥 Auto-download once student is loaded & QR is rendered
+  useEffect(() => {
+    if (student) {
+      const timer = setTimeout(() => {
+        handleDownload();
+      }, 500); // give time for QR code to render
+      return () => clearTimeout(timer);
+    }
+  }, [student, handleDownload]);
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-white">
@@ -83,14 +91,6 @@ const GenerateQR = () => {
           </div>
         </div>
       </div>
-
-      {/* <button
-        onClick={handleDownload}
-        disabled={!student} // Prevents downloading when student data is not loaded
-        className="mt-4 cursor-pointer rounded-md bg-zinc-900 px-4 py-2.5 text-sm font-medium text-zinc-100 hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        Download as PNG
-      </button> */}
     </div>
   );
 };

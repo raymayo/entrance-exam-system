@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import Tooltip from "../admin-components/Tooltip.jsx";
 import { SquarePen, Eye, Trash } from "lucide-react";
 import EditExamModal from "./EditExamModal.jsx";
+import ViewExamModel from "./ViewExamModal.jsx";
 
 const ManageExam = () => {
   const [exams, setExams] = useState([]);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
   const [selectedExam, setSelectedExam] = useState(null); 
 
   const openEditModal = (selectedExam) => {
@@ -18,6 +20,17 @@ const ManageExam = () => {
     setSelectedExam(null);
     setEditModalOpen(false);
   }
+
+  const openViewModal = (selectedExam) => {
+    setSelectedExam(selectedExam);
+    setViewModalOpen(true);
+  };
+
+  const closeViewModal = () => {
+    setSelectedExam(null);
+    setViewModalOpen(false);
+  }
+
 
   const fetchExams = async () => {
     try {
@@ -75,14 +88,16 @@ const ManageExam = () => {
                 </td>
                 <td className="w-fit border-t border-zinc-300 px-4 py-3 text-left text-sm">
                   <div className="flex gap-2">
+
                     <Tooltip text="View Exam" position="top">
                       <button
-                    
+                    onClick={() => openViewModal(exam._id)}
                         className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
                       >
                         <Eye size={16} className="text-zinc-900" />
                       </button>
                     </Tooltip>
+
                     <Tooltip text="Edit Exam" position="top">
                       <button
                         onClick={() => openEditModal(exam._id)}
@@ -91,6 +106,7 @@ const ManageExam = () => {
                         <SquarePen size={16} className="text-zinc-900" />
                       </button>
                     </Tooltip>
+
                     <Tooltip text="Delete Exam" position="top">
                       <button
 
@@ -114,6 +130,12 @@ const ManageExam = () => {
         isOpen={editModalOpen}
         onClose={closeEditModal}
         onUpdate={fetchExams}
+      />
+
+      <ViewExamModel
+        examId={selectedExam}
+        isOpen={viewModalOpen}
+        onClose={closeViewModal}
       />
     </div>
   );
