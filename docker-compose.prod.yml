@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:6
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+  backend:
+    build: ./backend
+    restart: always
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/entrance-exam
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - "8080:80"
+
+  mongo-seed:
+    image: mongo:6
+    depends_on:
+      - mongo
+    volumes:
+      - ./dump:/dump
+    entrypoint: >
+      bash -c "
+        until mongosh --host mongo --eval 'db.adminCommand(\"ping\")' >/dev/null 2>&1;
+        do sleep 2;
+        done;
+        if [ $(mongosh --quiet --host mongo entrance-exam --eval 'db.getCollectionNames().length') -eq 0 ];
+        then
+          mongorestore --host mongo --port 27017 --db entrance-exam /dump/entrance-exam;
+        else
+          echo 'Database already has data, skipping restore.';
+        fi
+      "
+
+volumes:
+  mongo_data:

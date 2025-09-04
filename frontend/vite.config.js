@@ -8,4 +8,10 @@ export default defineConfig({
   optimizeDeps: {
     include: ["html-to-image"],
   },
+  server: {
+    // Specify the development server port
+    port: 8080,
+  },
+  // Base name of your app
+  base: "/",
 })

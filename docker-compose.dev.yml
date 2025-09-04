@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./dump:/dump   # keep your mongodump mounted
+
+  mongo-seed:
+    image: mongo:6
+    depends_on:
+      - mongo
+    volumes:
+      - ./dump:/dump
+    entrypoint: [
+      "bash", "-c",
+      "until mongosh --host mongo --eval 'db.adminCommand(\"ping\")' >/dev/null 2>&1; do sleep 2; done && mongorestore --host mongo --port 27017 --db entrance-exam /dump/entrance-exam"
+    ]
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/entrance-exam
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data:
