@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import axios from "axios";
 
 const AdminLogin = () => {
@@ -27,7 +28,7 @@ const AdminLogin = () => {
         admin,
       );
       console.log(response.data);
-      alert("Login successfully!");
+      toast.success("Login successful");
 
       // Store user info in sessionStorage
       sessionStorage.setItem(
@@ -43,8 +44,10 @@ const AdminLogin = () => {
         username: "",
         password: "",
       });
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 1500);
 
-      navigate("/admin/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);
       alert("Error logging in");

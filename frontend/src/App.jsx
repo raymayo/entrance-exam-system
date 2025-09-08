@@ -14,6 +14,8 @@ import AdminLogin from "./components/AdminLogin.jsx";
 import AdminProtectedRoute from "./components/AdminProtectedRoute.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 
+import toast, { Toaster } from 'react-hot-toast';
+
 function App() {
   return (
     <StudentProvider>
@@ -39,6 +41,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      <Toaster />
     </StudentProvider>
   );
 }

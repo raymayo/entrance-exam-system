@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const CreateExam = () => {
   const navigate = useNavigate();
@@ -49,7 +50,8 @@ const CreateExam = () => {
         title,
         questions,
       });
-      alert("Exam created successfully");
+      toast.success("Exam created successfully");
+
 
       navigate("/admin/exam-list");
     } catch (err) {

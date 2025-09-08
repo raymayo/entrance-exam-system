@@ -4,6 +4,7 @@ import Tooltip from "../admin-components/Tooltip";
 import PrintPage from "./PrintPage.jsx";
 import StudentDetailsModal from "./StudentDetailsModal.jsx";
 import EditStudentModal from "./EditStudentModal.jsx";
+import toast from "react-hot-toast";
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
@@ -40,7 +41,8 @@ const StudentList = () => {
 
       const savedStudent = await res.json();
       console.log("Saved:", savedStudent);
-      alert("Student details saved successfully!");
+      toast.success("Student details saved successfully!");
+
 
       setIsEditModalOpen(false) // Close modal
       fetchStudents();

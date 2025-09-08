@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Entrance = () => {
   const [regNo, setRegNo] = useState("");
@@ -51,8 +52,12 @@ const Entrance = () => {
       // Store user session in sessionStorage
       sessionStorage.setItem("authUser", JSON.stringify(auth));
 
-      alert("Login successful");
-      navigate(`/student/${auth._id}/details`, { replace: true });
+      toast.success("Login successful");
+
+      setTimeout(() => {
+        navigate(`/student/${auth._id}/details`, { replace: true });
+      }, 1500);
+
     } catch (error) {
       console.error("Error during login:", error);
       setErrorMessage(error.message);
@@ -75,6 +80,7 @@ const Entrance = () => {
               type="text"
               value={regNo}
               onChange={(e) => setRegNo(e.target.value)}
+              placeholder="reg-1023"
               required
             />
           </label>
@@ -98,7 +104,7 @@ const Entrance = () => {
           </button>
         </form>
 
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+
       </div>
     </div>
   );

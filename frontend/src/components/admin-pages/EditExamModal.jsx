@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CookingPot } from "lucide-react";
+import toast from "react-hot-toast";
 
 // Reusable Question Block
 const QuestionForm = ({ q, index, onChange, onChoiceChange, onRemove }) => (
@@ -127,7 +128,7 @@ const EditExamModal = ({ examId, isOpen, onClose, onUpdated }) => {
                 title,
                 questions,
             });
-            alert("Exam updated successfully");
+            toast.success("Exam updated successfully");
             onUpdated?.();
             onClose();
         } catch (err) {

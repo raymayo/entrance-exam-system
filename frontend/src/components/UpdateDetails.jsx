@@ -90,7 +90,8 @@ const UpdateDetails = () => {
     console.log(student);
   };
 
-  const handleNavigate = async () => {
+  const handleNavigate = async (e) => {
+    e.preventDefault();
     await submitStudentData();
     navigate(`/student/${id}/exam`, { state: { student, key } });
   };
@@ -106,7 +107,7 @@ const UpdateDetails = () => {
           <h1 className="mb-2 text-center text-xl font-semibold">
             Student Details
           </h1>
-          <form className="">
+          <form onSubmit={handleNavigate} className="">
             <div className="grid w-full grid-cols-6 gap-x-2.5 gap-y-4">
               <label className="flex flex-col gap-1 text-sm font-medium">
                 Registration No.
@@ -156,7 +157,6 @@ const UpdateDetails = () => {
                   placeholder="e.g. 09123456789"
                   value={student?.email || ""}
                   onChange={handleChange}
-                  required
                   disabled
                 />
               </label>
@@ -263,17 +263,24 @@ const UpdateDetails = () => {
                   <option value="" disabled>
                     Select Course
                   </option>
-                  <option value="BSBA HRM">BSBA HRM</option>
-                  <option value="BSBA FM">BSBA FM</option>
-                  <option value="BSA">BSA</option>
-                  <option value="BSCS">BSCS</option>
-                  <option value="BSED MATH & FIL">BSED MATH & FIL</option>
-                  <option value="BSED SOCSTUD">BSED SOCSTUD</option>
-                  <option value="BEED">BEED</option>
-                  <option value="CPE">CPE</option>
-                  <option value="BSHM">BSHM</option>
+                  {[
+                    "BSBA HRM",
+                    "BSBA FM",
+                    "BSA",
+                    "BSCS",
+                    "BSED MATH & FIL",
+                    "BSED SOCSTUD",
+                    "BEED",
+                    "CPE",
+                    "BSHM",
+                  ].map((course) => (
+                    <option key={course} value={course}>
+                      {course}
+                    </option>
+                  ))}
                 </select>
               </label>
+
               <label className="col-span-3 flex flex-col gap-1 text-sm font-medium">
                 2nd Choice Course
                 <select
@@ -286,15 +293,25 @@ const UpdateDetails = () => {
                   <option value="" disabled>
                     Select Course
                   </option>
-                  <option value="BSBA HRM">BSBA HRM</option>
-                  <option value="BSBA FM">BSBA FM</option>
-                  <option value="BSA">BSA</option>
-                  <option value="BSCS">BSCS</option>
-                  <option value="BSED MATH & FIL">BSED MATH & FIL</option>
-                  <option value="BSED SOCSTUD">BSED SOCSTUD</option>
-                  <option value="BEED">BEED</option>
-                  <option value="CPE">CPE</option>
-                  <option value="BSHM">BSHM</option>{" "}
+                  {[
+                    "BSBA HRM",
+                    "BSBA FM",
+                    "BSA",
+                    "BSCS",
+                    "BSED MATH & FIL",
+                    "BSED SOCSTUD",
+                    "BEED",
+                    "CPE",
+                    "BSHM",
+                  ].map((course) => (
+                    <option
+                      key={course}
+                      value={course}
+                      disabled={student?.course1st === course} // disable if same as 1st
+                    >
+                      {course}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className="col-span-6 flex flex-col gap-1 text-sm font-medium">
@@ -311,9 +328,9 @@ const UpdateDetails = () => {
             </div>
 
             <button
-              type="button"
+              type="submit"
               className="mt-10 w-full cursor-pointer rounded-md border bg-zinc-900 p-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 disabled:bg-zinc-200 disabled:text-zinc-500"
-              onClick={handleNavigate}
+           
             >
               Proceed
             </button>

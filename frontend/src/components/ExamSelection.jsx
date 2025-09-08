@@ -89,7 +89,7 @@ const ExamSelection = () => {
                   className="flex h-full w-full flex-col justify-evenly gap-4 rounded-xl border border-zinc-200 p-8 text-center shadow-2xs"
                 >
                   <Icon className="mx-auto p-4 text-zinc-800" size={100} />
-                  <h1 className="text-xl font-semibold">{exam.title}</h1>
+                  <h1 className="text-xl font-semibold capitalize">{exam.title}</h1>
                   <p>Score: {score !== null ? score : "Not Taken"}</p>
                   <button
                     className="cursor-pointer rounded-md border border-zinc-300 bg-zinc-900 p-2 text-sm text-zinc-100 shadow-2xs hover:bg-zinc-800 disabled:bg-zinc-300 disabled:text-zinc-500"

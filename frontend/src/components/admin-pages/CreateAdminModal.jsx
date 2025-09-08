@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { X } from "lucide-react";
+import toast from "react-hot-toast";
 
 
 const CreateAdminModal = ({isOpen, onClose}) => {
@@ -30,7 +31,7 @@ const CreateAdminModal = ({isOpen, onClose}) => {
                 admin,
             );
             console.log(response.data);
-            alert("Admin created successfully");
+            toast.success("Admin created successfully");
 
             // Reset the form
             setAdmin({
