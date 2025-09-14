@@ -2,21 +2,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useStudent } from "../context/StudentContext.jsx";
 import { useEffect, useState } from "react";
 import {
-  Sigma, // Mathematics
-  BookText, // English
-  Atom, // Science
-  PenLine, // Filipino
-  Globe2, // Social Studies
+Lock,
+Play
 } from "lucide-react";
 
 // Map exam titles to icons
-const icons = {
-  math: Sigma,
-  english: BookText,
-  science: Atom,
-  filipino: PenLine,
-  socialstudies: Globe2,
-};
+
 
 const ExamSelection = () => {
   const navigate = useNavigate();
@@ -47,6 +38,20 @@ const ExamSelection = () => {
     navigate(`/student/${id}/exam/${subjectId}`);
   };
 
+
+  console.log(student)
+  console.log(subjects.length)
+  console.log(Object.keys(student.examScores) < subjects.length ? true : false)
+
+  const formatTitle = (str) => {
+    if (!str) return "";
+    return str
+      .split("-")                  // ["social", "studies"]
+      .map(word => word[0].toUpperCase() + word.slice(1)) // ["Social", "Studies"]
+      .join(" ");                  // "Social Studies"
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!student || !student.examScores) return;
@@ -73,30 +78,38 @@ const ExamSelection = () => {
   if (!student) return <p>Loading student data...</p>;
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center border p-8 lg:justify-center">
-      <main className="grid h-full max-h-[300px] w-full max-w-7xl gap-8 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-5">
+    <div className="flex h-screen w-screen flex-col gap-16 items-center border p-8 lg:justify-center">
+      <div className="text-center">
+        <h1 className="text-3xl font-semibold">Welcome to the Entrance Exam</h1>
+        <p className="text-zinc-600 text-md">Please complete the following sections in order.</p>
+      </div>
+     
+      <main className="w-full h-full max-h-fit max-w-7xl gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
         {loading ? (
           <p>Loading exams...</p>
         ) : (
             subjects.map((exam) => {
-              const Icon = icons[exam.title] || Globe2; // fallback icon
+              // const Icon = icons[exam.title] || Globe2; // fallback icon
               const score = student.examScores?.[exam.title] ?? null;
               const finished = score !== null;
 
               return (
                 <div
                   key={exam._id || exam.id}
-                  className="flex h-full w-full flex-col justify-evenly gap-4 rounded-xl border border-zinc-200 p-8 text-center shadow-2xs"
-                >
-                  <Icon className="mx-auto p-4 text-zinc-800" size={100} />
-                  <h1 className="text-xl font-semibold capitalize">{exam.title}</h1>
-                  <p>Score: {score !== null ? score : "Not Taken"}</p>
+                  className="h-full w-full p-4 flex flex-col rounded-md border border-zinc-200 text-left shadow-2xs">
+                  <h1 className="text-lg font-semibold capitalize">{formatTitle(exam.title)} Exam</h1>
+                  <p className="text-sm text-zinc-600">score: {score !== null ? score : "???"} | 10 questions</p>
+                  {/* <p>Score: {score !== null ? score : "Not Taken"}</p> */}
                   <button
-                    className="cursor-pointer rounded-md border border-zinc-300 bg-zinc-900 p-2 text-sm text-zinc-100 shadow-2xs hover:bg-zinc-800 disabled:bg-zinc-300 disabled:text-zinc-500"
+                    className="mt-4 cursor-pointer rounded border border-zinc-300 bg-zinc-900 p-2 text-sm text-zinc-100 shadow-2xs hover:bg-zinc-800 disabled:bg-zinc-300 disabled:text-zinc-500"
                     disabled={finished}
                     onClick={() => handleStart(exam.title)}
                   >
-                    {finished ? "Finished" : "Start Exam"}
+                    {finished ? 
+                    <div className="w-full flex justify-center items-center gap-1 cursor-not-allowed">
+                        <Lock size={20} /> Locked 
+                        </div>
+                    : "Start"}
                   </button>
                 </div>
               );
@@ -104,16 +117,16 @@ const ExamSelection = () => {
 
         )}
 
-        <button
-          disabled={Object.values(student.examScores || {}).some(
-            (score) => score === null
-          )}
-          onClick={handleSubmit}
-          className="col-span-5 w-full cursor-pointer rounded-md border border-zinc-300 bg-zinc-900 p-2 text-sm text-zinc-100 shadow-2xs hover:bg-zinc-800 disabled:bg-zinc-300 disabled:text-zinc-500"
-        >
-          Submit Result
-        </button>
+
       </main>
+
+      <button
+        disabled={Object.keys(student.examScores || {}).length < subjects.length ? true : false}
+        onClick={handleSubmit}
+        className="col-span-5 w-full cursor-pointer rounded-md border border-zinc-300 bg-zinc-900 p-2 text-sm text-zinc-100 shadow-2xs hover:bg-zinc-800 disabled:bg-zinc-300 disabled:text-zinc-500 max-w-7xl"
+      >
+        Submit Result
+      </button>
     </div>
   );
 };

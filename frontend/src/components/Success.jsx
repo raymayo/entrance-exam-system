@@ -22,7 +22,7 @@ const Success = () => {
     <div className="flex h-screen w-full flex-col items-center justify-center gap-8 border p-8 lg:justify-center">
       <div className="success-animation">
         <svg
-          class="checkmark"
+          className="checkmark"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 52 52"
         >

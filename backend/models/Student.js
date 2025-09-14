@@ -39,11 +39,7 @@ const StudentSchema = new mongoose.Schema(
             type: Map,
             of: Number,
             default: {
-                english: null,
-                filipino: null,
-                math: null,
-                science: null,
-                socialstudies: null,
+             
         }
 
 

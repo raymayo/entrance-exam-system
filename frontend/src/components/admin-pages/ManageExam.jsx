@@ -66,9 +66,9 @@ const ManageExam = () => {
               <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">
                 Title
               </th>
-              <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">
+              {/* <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">
                 Description
-              </th>
+              </th> */}
               <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">
                 Actions
               </th>
@@ -83,9 +83,9 @@ const ManageExam = () => {
                 <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
                   {exam.title}
                 </td>
-                <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
+                {/* <td className="border-t border-zinc-300 px-4 py-3 text-left text-sm">
                   {exam.description}
-                </td>
+                </td> */}
                 <td className="w-fit border-t border-zinc-300 px-4 py-3 text-left text-sm">
                   <div className="flex gap-2">
 

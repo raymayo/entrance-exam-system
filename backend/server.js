@@ -7,6 +7,8 @@ import registerRoutes from './routes/registerRoutes.js';
 import studentRoutes from './routes/studentRoutes.js'
 import adminRoutes from './routes/adminRoutes.js';
 import examRoute from "./routes/examRoutes.js";
+import courseRoute from "./routes/courseRoutes.js";
+
 
 
 const app = express();
@@ -20,14 +22,14 @@ app.use('/api/register', registerRoutes);
 app.use('/api/student', studentRoutes)
 app.use('/api/admin', adminRoutes)
 app.use("/api/exams", examRoute);
+app.use("/api/course", courseRoute);
 
     const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/entrance-exam";
 
 // MongoDB Connection
 
 mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+
 }).then(() => console.log('MongoDB Connected'))
 .catch(err => console.error(err));
 

@@ -71,14 +71,14 @@ const Exam = () => {
                   return (
                     <label
                       key={cIdx}
-                      className={`flex items-center gap-2 cursor-pointer rounded py-1 px-2 transition-all duration-150 ${isSelected
-                          ? " bg-zinc-800 text-white font-light"
-                          : " hover:bg-zinc-200"
+                      className={`flex items-center gap-2 cursor-pointer rounded py-1 px-2 transition-all  duration-150 border-2 border-black/0  ${isSelected
+                          ? "border-green-600 bg-green-600/25"
+                          : "hover:bg-zinc-100"
                         }`}
                       onClick={() => handleAnswerChange(qIdx, cIdx)}
                     >
                       {isSelected ? (
-                        <CheckCircle className="w-5 h-5 text-zinc-100" />
+                        <CheckCircle className="w-5 h-5 text-green-600" />
                       ) : (
                         <Circle className="w-5 h-5 text-zinc-400" />
                       )}
