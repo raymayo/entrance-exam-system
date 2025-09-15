@@ -16,7 +16,8 @@ const AdminDashboard = () => {
         <div className="rounded-md border border-zinc-200 p-4 shadow-2xs w-full grid place-items-center">
           <PieChartComponent />
         </div>
-        <div className="rounded-md border border-zinc-200 p-4 shadow-2xs w-full grid place-items-center">
+        <div className="rounded-md border border-zinc-200 p-4 shadow-2xs w-full flex flex-col focus:outline-none">
+          <h1 className="text-xl font-semibold text-center mb-4">Examinee Scores</h1>
           <FinalGradeChart />
         </div>
       </div>
