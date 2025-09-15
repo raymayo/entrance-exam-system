@@ -10,6 +10,8 @@ import {
   Legend,
 } from "recharts";
 
+import { PieChart, Pie, Cell } from "recharts";
+
 // Function to group scores into ranges
 function groupScores(scores, step = 10) {
   const bins = [];
@@ -32,11 +34,17 @@ function groupScores(scores, step = 10) {
 // Example student scores
 const studentScores = [
   5, 12, 18, 22, 29, 29, 29, 35, 35, 35, 37, 42, 42, 42, 42, 42, 42, 48, 51, 51,
-  51, 51, 56, 61, 61, 61, 73, 77, 85,
+  51, 51, 56, 61, 61, 61, 73, 77, 85, 5, 12, 18, 22, 29, 29, 29, 35, 35, 35, 37, 42, 42, 42, 42, 42, 42, 48, 51, 51,
+  51, 51, 56, 61, 61, 61, 73, 77, 85, 5, 12, 18, 22, 29, 29, 29, 35, 35, 35, 37, 42, 42, 42, 42, 42, 42, 48, 51, 51,
+  51, 51, 56, 61, 61, 61, 73, 77, 85, 5, 12, 18, 22, 29, 29, 29, 35, 35, 35, 37, 42, 42, 42, 42, 42, 42, 48, 51, 51,
+  51, 51, 56, 61, 61, 61, 73, 77, 85, 5, 12, 18, 22, 29, 29, 29, 35, 35, 35, 37, 42, 42, 42, 42, 42, 42, 48, 51, 51,
+  51, 51, 56, 61, 61, 61, 73, 77, 85, 5, 12, 18, 22, 29, 29, 29, 35, 35, 35, 37, 42, 42, 42, 42, 42, 42, 48, 51, 51,
+  51, 51, 56, 61, 61, 61, 73, 77, 85, 5, 12, 18, 22, 29, 29, 29, 35, 35, 35, 37, 42, 42, 42, 42, 42, 42, 48, 51, 51,
+  51, 51, 56, 61, 61, 61, 73, 77, 85, 5, 12, 18, 22, 29, 29, 29, 35, 35
 ];
 const gradeData = groupScores(studentScores, 10);
 
-function CustomTooltip({ payload, label, active }) {
+function CustomTooltip({ payload, active }) {
   if (active) {
     return (
       <div className="custom-tooltip px-3 py-1 border border-zinc-200 rounded-lg bg-white shadow-xl text-sm font-mono text-zinc-700 flex items-center gap-2">
@@ -59,7 +67,6 @@ export default function FinalGradeChart() {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
-        className="focus:outline-none active:outline-none outline-none"
         data={gradeData}
         margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
       >

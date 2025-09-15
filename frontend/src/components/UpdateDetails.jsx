@@ -58,7 +58,7 @@ const UpdateDetails = () => {
             course1st: data.course1st || "",
             course2nd: data.course2nd || "",
             transfereeCourse: data.transfereeCourse || "",
-            examDate: data.examDate || "",
+            examDate: Date.now(),
             examScores: {
             },
           });
@@ -325,7 +325,7 @@ const UpdateDetails = () => {
             <button
               type="submit"
               className="mt-10 w-full cursor-pointer rounded-md border bg-zinc-900 p-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 disabled:bg-zinc-200 disabled:text-zinc-500"
-           
+
             >
               Proceed
             </button>

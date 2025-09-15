@@ -35,7 +35,7 @@ const TotalRegisteredStudent = () => {
   }, []);
 
   return (
-    <div className="flex w-full gap-4 rounded-lg bg-white">
+    <div className="grid grid-cols-2 w-full gap-4 rounded-lg bg-white">
       <div className="w-full rounded-md border border-zinc-200 p-4 shadow-2xs">
         <div className="flex gap-8">
           <h2 className="mb-4 text-base font-medium">Total Exam Takers</h2>

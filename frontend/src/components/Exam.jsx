@@ -12,13 +12,42 @@ const Exam = () => {
   const [exam, setExam] = useState(null);
   const [answers, setAnswers] = useState({}); // { questionIndex: choiceIndex }
 
+  const QUESTION_LIMIT = 10; // ✅ Change this to set how many questions max
+
+  // Shuffle utility
+  const shuffleArray = (arr) => {
+    return arr
+      .map((item) => ({ sort: Math.random(), value: item }))
+      .sort((a, b) => a.sort - b.sort)
+      .map((obj) => obj.value);
+  };
+
   // Fetch exam details
   useEffect(() => {
     if (!subjectId) return;
 
     axios
       .get(`http://localhost:5000/api/exams/title/${subjectId}`)
-      .then((res) => setExam(res.data))
+      .then((res) => {
+        if (res.data?.questions) {
+          // Shuffle questions
+          let shuffledQuestions = shuffleArray(res.data.questions);
+
+          // Apply question limit
+          shuffledQuestions = shuffledQuestions.slice(0, QUESTION_LIMIT);
+
+          // Shuffle choices per question
+          shuffledQuestions = shuffledQuestions.map((q) => {
+            const choices = shuffleArray(q.choices);
+            const correctAnswerIndex = choices.indexOf(q.choices[q.correctAnswer]);
+            return { ...q, choices, correctAnswer: correctAnswerIndex };
+          });
+
+          setExam({ ...res.data, questions: shuffledQuestions });
+        } else {
+          setExam(res.data);
+        }
+      })
       .catch((err) => console.error("Failed to fetch exam:", err));
   }, [subjectId]);
 
@@ -41,7 +70,8 @@ const Exam = () => {
     if (!exam?.questions) return;
 
     const correctCount = exam.questions.reduce(
-      (count, q, idx) => (answers[idx] === q.correctAnswer ? count + 1 : count),
+      (count, q, idx) =>
+        answers[idx] === q.correctAnswer ? count + 1 : count,
       0
     );
 
@@ -50,20 +80,28 @@ const Exam = () => {
       examScores: { ...prev.examScores, [subjectId]: correctCount },
     }));
 
-    console.log(`Updated ${subjectId} score to: ${correctCount} correct answers`);
+    console.log(
+      `Updated ${subjectId} score to: ${correctCount} correct answers`
+    );
     navigate(`/student/${id}/exam/`);
   };
 
-
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-start p-8 overflow-y-auto bg-zinc-50">
-      <h1 className="text-2xl font-bold uppercase">{subjectId.toUpperCase()} Exam</h1>
+      <h1 className="text-2xl font-bold uppercase">
+        {subjectId.toUpperCase()} Exam
+      </h1>
 
       {exam ? (
         <div className="mt-6 w-full max-w-2xl space-y-6">
           {exam.questions.map((q, qIdx) => (
-            <div key={q._id?.$oid || qIdx} className="rounded-lg border border-zinc-200 p-4 shadow-2xs bg-white">
-              <p className="font-medium border-b pb-2 border-zinc-200">{qIdx + 1}. {q.questionText}</p>
+            <div
+              key={q._id?.$oid || qIdx}
+              className="rounded-lg border border-zinc-200 p-4 shadow-2xs bg-white"
+            >
+              <p className="font-medium border-b pb-2 border-zinc-200">
+                {qIdx + 1}. {q.questionText}
+              </p>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 {q.choices.map((choice, cIdx) => {
                   const isSelected = answers[qIdx] === cIdx;
@@ -71,9 +109,9 @@ const Exam = () => {
                   return (
                     <label
                       key={cIdx}
-                      className={`flex items-center gap-2 cursor-pointer rounded py-1 px-2 transition-all  duration-150 border-2 border-black/0  ${isSelected
-                          ? "border-green-600 bg-green-600/25"
-                          : "hover:bg-zinc-100"
+                      className={`flex items-center gap-2 cursor-pointer rounded py-1 px-2 transition-all duration-150 border-2 border-black/0 ${isSelected
+                        ? "border-green-600 bg-green-600/25"
+                        : "hover:bg-zinc-100"
                         }`}
                       onClick={() => handleAnswerChange(qIdx, cIdx)}
                     >

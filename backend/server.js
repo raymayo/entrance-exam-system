@@ -8,6 +8,7 @@ import studentRoutes from './routes/studentRoutes.js'
 import adminRoutes from './routes/adminRoutes.js';
 import examRoute from "./routes/examRoutes.js";
 import courseRoute from "./routes/courseRoutes.js";
+import reportRoute from "./routes/reportRoutes.js"
 
 
 
@@ -23,15 +24,16 @@ app.use('/api/student', studentRoutes)
 app.use('/api/admin', adminRoutes)
 app.use("/api/exams", examRoute);
 app.use("/api/course", courseRoute);
+app.use("/api/report", reportRoute);
 
-    const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/entrance-exam";
+const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/entrance-exam";
 
 // MongoDB Connection
 
 mongoose.connect(mongoUri, {
 
 }).then(() => console.log('MongoDB Connected'))
-.catch(err => console.error(err));
+    .catch(err => console.error(err));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
