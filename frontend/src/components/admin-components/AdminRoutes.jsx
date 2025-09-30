@@ -6,6 +6,7 @@ import AdminList from "../admin-pages/AdminList.jsx";
 import ManageExam from "../admin-pages/ManageExam.jsx";
 import CreateExam from "../admin-pages/CreateExam.jsx";
 import CreateCourse from "../admin-pages/CreateCourse.jsx";
+import CoursesTable from "../admin-pages/CourseTable.jsx";
 
 const AdminRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AdminRoutes = () => {
       <Route path="/admin-list" element={<AdminList />} />
       <Route path="/exam-list" element={<ManageExam />} />
       <Route path="/create-exam" element={<CreateExam />} />
+      <Route path="/course-table" element={<CoursesTable />} />
       <Route path="/create-course" element={<CreateCourse />} />
     </Routes>
   );

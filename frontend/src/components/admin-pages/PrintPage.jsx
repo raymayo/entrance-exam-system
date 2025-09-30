@@ -14,7 +14,7 @@ const PrintPage = ({ student }) => {
     // onBeforePrint: handleBeforePrint,
   });
 
-  console.log(student);
+  // console.log(student);
   return (
     <div>
       <Tooltip text="Print" position="top">

@@ -196,7 +196,7 @@ const AdminSidebar = () => {
             to="/admin/students"
             className="block rounded-md px-3 py-1 text-sm hover:bg-zinc-200/50"
           >
-            Student Table
+            Examinee List
           </NavLink>
           <NavLink
             to="/admin/admin-list"
@@ -204,7 +204,7 @@ const AdminSidebar = () => {
           >
             Administrator Table
           </NavLink>
-       
+
         </DropdownMenu>
 
         {/* Students Dropdown */}
@@ -214,6 +214,13 @@ const AdminSidebar = () => {
             className="block rounded-md px-3 py-1 text-sm hover:bg-zinc-200/50"
           >
             Examination Management
+          </NavLink>
+
+          <NavLink
+            to="/admin/course-table"
+            className="block rounded-md px-3 py-1 text-sm hover:bg-zinc-200/50"
+          >
+            Course Table
           </NavLink>
 
           <NavLink

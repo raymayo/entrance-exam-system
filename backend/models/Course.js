@@ -17,6 +17,11 @@ const CourseSchema = new mongoose.Schema({
         required: true,
         min: 0,
     },
+    department: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     durationYears: {
         type: String,
         default: "4",

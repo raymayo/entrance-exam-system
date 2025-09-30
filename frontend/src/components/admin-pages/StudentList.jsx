@@ -12,6 +12,20 @@ const StudentList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  function formatToMDY(dateInput) {
+    const date = new Date(dateInput);
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  }
+
+
+  // Example usage:
+  console.log(formatToMDY("2025-09-16T08:30:00")); // "9/16/2025"
+  console.log(formatToMDY(new Date())); // today's date
+
+
   useEffect(() => {
     fetchStudents();
   }, []);
@@ -80,10 +94,13 @@ const StudentList = () => {
           <thead>
             <tr>
               <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">#</th>
-              <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">ID</th>
+              {/* <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">ID</th> */}
               <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">Name</th>
-              <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">Email</th>
               <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">Phone</th>
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">1st Choice</th>
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">2nd Choice</th>
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">Score</th>
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">Date</th>
               <th className="px-4 py-2.5 text-left text-xs font-medium text-zinc-500">Actions</th>
             </tr>
           </thead>
@@ -91,10 +108,13 @@ const StudentList = () => {
             {students.map((student, index) => (
               <tr key={index}>
                 <td className="border-y border-zinc-300/50 px-4 py-3">{index + 1}</td>
-                <td className="border-y border-zinc-300/50 px-4 py-3">{student.regNo}</td>
+                {/* <td className="border-y border-zinc-300/50 px-4 py-3">{student.regNo}</td> */}
                 <td className="border-y border-zinc-300/50 px-4 py-3">{student.name}</td>
-                <td className="border-y border-zinc-300/50 px-4 py-3">{student.email}</td>
                 <td className="border-y border-zinc-300/50 px-4 py-3">{student.phone}</td>
+                <td className="border-y border-zinc-300/50 px-4 py-3">{student.course1st}</td>
+                <td className="border-y border-zinc-300/50 px-4 py-3">{student.course2nd}</td>
+                <td className="border-y border-zinc-300/50 px-4 py-3">{student.examScore}</td>
+                <td className="border-y border-zinc-300/50 px-4 py-3">{formatToMDY(student.examDate)}</td>
                 <td className="w-fit border-y border-zinc-300/50 px-4 py-3">
                   <div className="flex gap-2">
                     <Tooltip text="View Student" position="top">
