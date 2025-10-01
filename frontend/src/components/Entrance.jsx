@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 const Entrance = () => {
   const [regNo, setRegNo] = useState("");
@@ -66,46 +77,44 @@ const Entrance = () => {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-8 lg:justify-center">
-      <div className="pattern flex h-full max-h-fit w-full max-w-xl flex-col gap-8 rounded-xl border border-zinc-200 p-1.5 text-center shadow-md">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-6"
-        >
-          <h1 className="text-2xl font-semibold">Entrance Exam</h1>
+      <Card className="w-full max-w-lg">
+        <CardHeader>
+          <CardTitle className="text-xl text-center ">Entrance Exam</CardTitle>
+        </CardHeader>
+        <CardContent>
 
-          <label className="flex flex-col gap-1.5 text-left">
-            Registration No.
-            <input
-              className="rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
-              type="text"
-              value={regNo}
-              onChange={(e) => setRegNo(e.target.value)}
-              placeholder="reg-1023"
-              required
-            />
-          </label>
-
-          <label className="flex flex-col gap-1.5 text-left">
-            Password
-            <input
-              className="rounded-md border border-zinc-200 p-2 text-base shadow-2xs"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-
-          <button
-            className="mt-6 cursor-pointer rounded-md border bg-zinc-900 p-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800"
-            type="submit"
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4 "
           >
-            Enter
-          </button>
-        </form>
+            <label className="flex flex-col gap-1.5 text-left">
+              Registration No.
+              <Input
+                type="text"
+                value={regNo}
+                onChange={(e) => setRegNo(e.target.value)}
+                placeholder="reg-1023"
+                required />
 
+            </label>
 
-      </div>
+            <label className="flex flex-col gap-1.5 text-left">
+              Password
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
+            <Button type="submit">
+              Enter
+            </Button>
+
+          </form>
+        </CardContent>
+      </Card>
+
     </div>
   );
 };

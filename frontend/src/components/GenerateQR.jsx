@@ -56,10 +56,10 @@ const GenerateQR = () => {
   }, [student, handleDownload]);
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center bg-white">
+    <div className="flex h-screen w-screen flex-col items-center justify-center bg-zinc-100">
       <div
         ref={qrRef}
-        className="flex h-fit w-full max-w-sm flex-col items-center rounded-md bg-white shadow-md"
+        className="flex h-fit w-full max-w-sm flex-col items-center rounded-md bg-white shadow-md border border-zinc-200"
       >
         <div className="pattern flex h-fit w-full max-w-sm flex-col items-center gap-4 rounded-md p-4">
           <div className="flex w-full flex-col gap-2 rounded-md bg-white p-6">

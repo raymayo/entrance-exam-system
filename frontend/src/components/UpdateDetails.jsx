@@ -1,6 +1,22 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStudent } from "../context/StudentContext.jsx";
+import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+
+import { ChevronDownIcon } from "lucide-react"
+import { format } from "date-fns"
+
 
 const UpdateDetails = () => {
   const navigate = useNavigate();
@@ -73,17 +89,30 @@ const UpdateDetails = () => {
       }
     };
     fetchStudentData();
-  }, [id, setStudent, navigate]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setStudent((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  }, [id, setStudent, navigate,]);
 
-    console.log(student);
-  };
+  const handleChange = (eOrName, maybeValue) => {
+    if (typeof eOrName === "string") {
+      // Called like handleChange("gender", "MALE")
+      const name = eOrName
+      const value = maybeValue
+      setStudent((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }))
+    } else {
+      // Native input event
+      const { name, value } = eOrName.target
+      setStudent((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }))
+    }
+
+    console.log(student)
+  }
+
 
   const handleNavigate = async (e) => {
     e.preventDefault();
@@ -95,10 +124,15 @@ const UpdateDetails = () => {
     return <div>Loading...</div>; // Show loading message until student data is fetched
   }
 
+  const [open, setOpen] = useState(false)
+  const [date, setDate] = useState(
+    student?.birthday ? new Date(student.birthday) : undefined
+  )
+
   return (
     <div className="grid h-screen w-screen place-items-center">
-      <div className="pattern rounded-md border border-zinc-200 p-1.5 shadow-md">
-        <div className="w-full max-w-4xl rounded-md border border-zinc-200 bg-white p-8 shadow-2xs">
+      <div className="pattern rounded-md border border-zinc-200 shadow-md">
+        <div className="w-full max-w-4xl rounded-md bg-white p-8 shadow-2xs">
           <h1 className="mb-2 text-center text-xl font-semibold">
             Student Details
           </h1>
@@ -106,8 +140,7 @@ const UpdateDetails = () => {
             <div className="grid w-full grid-cols-6 gap-x-2.5 gap-y-4">
               <label className="flex flex-col gap-1 text-sm font-medium">
                 Registration No.
-                <input
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
                   type="text"
                   name="regNo"
                   placeholder="e.g. 20-4567"
@@ -116,11 +149,11 @@ const UpdateDetails = () => {
                   required
                   disabled
                 />
+
               </label>
               <label className="col-span-5 flex flex-col gap-1 text-sm font-medium">
                 Name
-                <input
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
                   type="text"
                   name="name"
                   placeholder="e.g. Dela Cruz, Juan, M."
@@ -129,11 +162,11 @@ const UpdateDetails = () => {
                   required
                   disabled
                 />
+
               </label>
               <label className="col-span-2 flex flex-col gap-1 text-sm font-medium">
                 Phone
-                <input
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
                   type="number"
                   name="phone"
                   placeholder="e.g. 09123456789"
@@ -145,8 +178,7 @@ const UpdateDetails = () => {
               </label>
               <label className="col-span-2 flex flex-col gap-1 text-sm font-medium">
                 Email
-                <input
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
                   type="email"
                   name="email"
                   placeholder="e.g. 09123456789"
@@ -158,25 +190,25 @@ const UpdateDetails = () => {
 
               <label className="col-span-2 flex flex-col gap-1 text-sm font-medium">
                 Sex
-                <select
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
-                  name="gender"
-                  id="gender"
-                  onChange={handleChange}
+                <Select
                   value={student?.gender || ""}
-                  required
+                  onValueChange={(val) => handleChange("gender", val)}
+
                 >
-                  <option value="" disabled>
-                    Select Sex
-                  </option>
-                  <option value="MALE">MALE</option>
-                  <option value="FEMALE">FEMALE</option>
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="MALE">MALE</SelectItem>
+                    <SelectItem value="FEMALE">FEMALE</SelectItem>
+                  </SelectContent>
+                </Select>
+
+
               </label>
               <label className="col-span-6 flex flex-col gap-1 text-sm font-medium">
                 Address
-                <input
-                  className="cursor-text rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
                   type="text"
                   name="address"
                   placeholder="e.g. 0123 Rizal St. Matain, Subic, Zambales"
@@ -187,20 +219,41 @@ const UpdateDetails = () => {
               </label>
               <label className="col-span-2 flex flex-col gap-1 text-sm font-medium">
                 Birthday
-                <input
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
-                  type="date"
-                  name="birthday"
-                  placeholder="MM/DD/YYYY"
-                  value={student?.birthday || ""}
-                  onChange={handleChange}
-                  required
-                />
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      id="birthday"
+                      className="w-48 justify-between font-normal"
+                    >
+                      {date ? format(date, "MMMM d, yyyy") : "Select date"}
+                      <ChevronDownIcon className="ml-2 h-4 w-4 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+
+                  <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      captionLayout="dropdown"
+                      fromYear={1950}
+                      toYear={new Date().getFullYear()}
+                      selected={date}
+                      onSelect={(d) => {
+                        if (!d) return
+                        setDate(d)
+                        setOpen(false)
+                        // Save ISO yyyy-mm-dd to your student state
+                        handleChange("birthday", d.toISOString().split("T")[0])
+                      }}
+                      disabled={(d) => d > new Date()} // block future dates
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
               </label>
               <label className="col-span-2 flex flex-col gap-1 text-sm font-medium">
                 Birthplace
-                <input
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
                   type="text"
                   name="birthplace"
                   placeholder="Matain, Subic, Zambales"
@@ -212,8 +265,8 @@ const UpdateDetails = () => {
 
               <label className="col-span-2 flex flex-col gap-1 text-sm font-medium">
                 Guardian/Parent Name
-                <input
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
+
                   type="text"
                   name="guardian"
                   placeholder="e.g. Juan Dela Cruz"
@@ -224,8 +277,7 @@ const UpdateDetails = () => {
               </label>
               <label className="col-span-3 flex flex-col gap-1 text-sm font-medium">
                 Last School Attended
-                <input
-                  className="cursor-text rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
                   type="text"
                   name="lastSchool"
                   value={student?.lastSchool || ""}
@@ -236,8 +288,7 @@ const UpdateDetails = () => {
               </label>
               <label className="col-span-3 flex flex-col gap-1 text-sm font-medium">
                 Last School Address
-                <input
-                  className="cursor-text rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
                   type="text"
                   name="lastSchoolAddress"
                   value={student?.lastSchoolAddress || ""}
@@ -248,71 +299,69 @@ const UpdateDetails = () => {
               </label>
               <label className="col-span-3 flex flex-col gap-1 text-sm font-medium">
                 1st Choice Course
-                <select
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
-                  name="course1st"
+                <Select
                   value={student?.course1st || ""}
-                  onChange={handleChange}
-                  required
+                  onValueChange={(val) => handleChange("course1st", val)}
                 >
-                  <option value="" disabled>
-                    Select Course
-                  </option>
-                  {[
-                    "BSBA HRM",
-                    "BSBA FM",
-                    "BSA",
-                    "BSCS",
-                    "BSED MATH & FIL",
-                    "BSED SOCSTUD",
-                    "BEED",
-                    "CPE",
-                    "BSHM",
-                  ].map((course) => (
-                    <option key={course} value={course}>
-                      {course}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select Course" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[
+                      "BSBA HRM",
+                      "BSBA FM",
+                      "BSA",
+                      "BSCS",
+                      "BSED MATH & FIL",
+                      "BSED SOCSTUD",
+                      "BEED",
+                      "CPE",
+                      "BSHM",
+                    ].map((course) => (
+                      <SelectItem key={course} value={course}>
+                        {course}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
               </label>
 
               <label className="col-span-3 flex flex-col gap-1 text-sm font-medium">
                 2nd Choice Course
-                <select
-                  className="cursor-pointer rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
-                  name="course2nd"
+                <Select
                   value={student?.course2nd || ""}
-                  onChange={handleChange}
-                  required
+                  onValueChange={(val) => handleChange("course2nd", val)}
                 >
-                  <option value="" disabled>
-                    Select Course
-                  </option>
-                  {[
-                    "BSBA HRM",
-                    "BSBA FM",
-                    "BSA",
-                    "BSCS",
-                    "BSED MATH & FIL",
-                    "BSED SOCSTUD",
-                    "BEED",
-                    "CPE",
-                    "BSHM",
-                  ].map((course) => (
-                    <option
-                      key={course}
-                      value={course}
-                      disabled={student?.course1st === course} // disable if same as 1st
-                    >
-                      {course}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select Course" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[
+                      "BSBA HRM",
+                      "BSBA FM",
+                      "BSA",
+                      "BSCS",
+                      "BSED MATH & FIL",
+                      "BSED SOCSTUD",
+                      "BEED",
+                      "CPE",
+                      "BSHM",
+                    ].map((course) => (
+                      <SelectItem
+                        key={course}
+                        value={course}
+                        disabled={student?.course1st === course} // prevent selecting same as 1st
+                      >
+                        {course}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </label>
               <label className="col-span-6 flex flex-col gap-1 text-sm font-medium">
                 Course Taken (Transferee Only)
-                <input
-                  className="cursor-text rounded-md border border-zinc-200 px-4 py-2 text-sm shadow-2xs disabled:bg-zinc-200 disabled:text-zinc-500"
+                <Input
                   type="text"
                   name="transfereeCourse"
                   placeholder="Course Taken from Previous School"
@@ -322,13 +371,12 @@ const UpdateDetails = () => {
               </label>
             </div>
 
-            <button
+            <Button
               type="submit"
-              className="mt-10 w-full cursor-pointer rounded-md border bg-zinc-900 p-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 disabled:bg-zinc-200 disabled:text-zinc-500"
-
+              className="mt-6 w-full"
             >
               Proceed
-            </button>
+            </Button>
           </form>
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
         </div>

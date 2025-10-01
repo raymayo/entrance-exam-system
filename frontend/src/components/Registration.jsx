@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 const Registration = () => {
   const navigate = useNavigate();
 
@@ -56,7 +57,7 @@ const Registration = () => {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-6">
-      <div className="pattern w-full max-w-xl rounded-md border border-zinc-200 p-1.5 shadow-md">
+      <div className="pattern w-full max-w-xl rounded-md border border-zinc-200 shadow-md">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-2 rounded-md border border-zinc-200 bg-white p-6 shadow-2xs"
@@ -72,37 +73,32 @@ const Registration = () => {
             Name
             <div className="flex gap-2">
               {["first", "last"].map((key) => (
-                <input
-                  key={key}
+                <Input key={key}
                   type="text"
                   name={key}
                   placeholder={`${key.charAt(0).toUpperCase() + key.slice(1)} Name`}
                   value={nameParts[key]}
-                  onChange={handleChange}
-                  className="mb-2 w-full rounded border border-zinc-200 p-2"
-                />
+                  onChange={handleChange} required />
               ))}
             </div>
           </label>
 
           <label className="flex flex-col gap-1 text-left text-sm">
             Phone Number
-            <input
-              className="rounded-md border border-zinc-200 p-2 text-base"
-              type="tel"
+            <Input type="tel"
               name="phone"
               placeholder="09XXXXXXXXX"
               maxLength={11}
               pattern="^09[0-9]{9}$"
               value={formData.phone}
               onChange={handleChange}
-              required
-            />
+              required />
+
           </label>
 
           <label className="flex flex-col gap-1 text-left text-sm">
             Email
-            <input
+            <Input
               className="rounded-md border border-zinc-200 p-2 text-base"
               type="email"
               name="email"
@@ -112,10 +108,8 @@ const Registration = () => {
               required
             />
           </label>
+          <Button variant="default" >Register</Button>
 
-          <button className="mt-6 cursor-pointer rounded-md border bg-zinc-900 p-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800">
-            Register
-          </button>
         </form>
       </div>
     </div>

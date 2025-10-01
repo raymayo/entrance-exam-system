@@ -13,6 +13,7 @@ import AdminLogin from "./components/AdminLogin.jsx";
 
 import AdminProtectedRoute from "./components/AdminProtectedRoute.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
+import Test from "./components/report/Test.jsx";
 
 import { Toaster } from 'react-hot-toast';
 
@@ -23,6 +24,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Registration />} />
+          <Route path="/test" element={<Test />} />
           <Route path="/entrance" element={<Entrance />} />
           <Route path="/student/:id" element={<GenerateQR />} />
           <Route path="/scan" element={<Scanner />} />
