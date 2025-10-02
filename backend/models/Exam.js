@@ -8,7 +8,10 @@ const questionSchema = new mongoose.Schema({
 
 const examSchema = new mongoose.Schema(
     {
-        title: { type: String, required: true },
+        title: { type: String, required: true }, // e.g., "Math"
+        passingScore: { type: Number, default: 0 },
+        highestScore: { type: Number, default: 0 },
+        lowestScore: { type: Number, default: 0 },
         questions: [questionSchema],
     },
     { timestamps: true }

@@ -42,9 +42,10 @@ const StudentSchema = new mongoose.Schema(
             default: {
 
             }
-
-
-        }
+        },
+        examResults: [
+            { type: mongoose.Schema.Types.ObjectId, ref: "ExamResult" }
+        ],
     },
     { timestamps: true }
 );

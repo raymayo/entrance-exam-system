@@ -9,6 +9,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import examRoute from "./routes/examRoutes.js";
 import courseRoute from "./routes/courseRoutes.js";
 import reportRoute from "./routes/reportRoutes.js"
+import schoolRoute from "./routes/schoolRoutes.js"
 
 
 
@@ -25,6 +26,7 @@ app.use('/api/admin', adminRoutes)
 app.use("/api/exams", examRoute);
 app.use("/api/course", courseRoute);
 app.use("/api/report", reportRoute);
+app.use("/api/school", schoolRoute);
 
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/entrance-exam";
 

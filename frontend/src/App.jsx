@@ -13,7 +13,7 @@ import AdminLogin from "./components/AdminLogin.jsx";
 
 import AdminProtectedRoute from "./components/AdminProtectedRoute.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
-import Test from "./components/report/Test.jsx";
+import Test from "./components/test/Test.jsx";
 
 import { Toaster } from 'react-hot-toast';
 
