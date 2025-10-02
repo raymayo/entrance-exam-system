@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useStudent } from "../context/StudentContext.jsx";
+import { useStudent } from "../../context/StudentContext.jsx";
 import { Circle, CheckCircle } from "lucide-react";
 import axios from "axios";
 

@@ -1,10 +1,10 @@
 import React from "react";
-import TotalRegisteredStudent from "../dashboard-components/TotalRegisteredStudent.jsx";
-import LineChartComponent from "../dashboard-components/LineChartComponent.jsx";
+import TotalRegisteredStudent from "../admin/TotalRegisteredStudent.jsx";
+import LineChartComponent from "../admin/LineChartComponent.jsx";
 // import PieChartComponent from "../dashboard-components/PieChartComponent.jsx";
-import HorizontalBarChart from "../dashboard-components/HorizontalBarChart.jsx";
-import FinalGradeChart from "../dashboard-components/FinalGradeChart.jsx";
-import ExamTakerPieChart from "../dashboard-components/ExamTakerPieChart.jsx";
+import HorizontalBarChart from "../admin/HorizontalBarChart.jsx";
+import FinalGradeChart from "../admin/FinalGradeChart.jsx";
+import ExamTakerPieChart from "../admin/ExamTakerPieChart.jsx";
 import TopPerformers from "./TopPerformers.jsx";
 
 const AdminDashboard = () => {

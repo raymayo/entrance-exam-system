@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AdminDashboard from "../admin-pages/AdminDashboard.jsx";
-import StudentList from "../admin-pages/StudentList.jsx";
-import AdminList from "../admin-pages/AdminList.jsx";
-import ManageExam from "../admin-pages/ManageExam.jsx";
-import CreateExam from "../admin-pages/CreateExam.jsx";
-import CreateCourse from "../admin-pages/CreateCourse.jsx";
-import CoursesTable from "../admin-pages/CourseTable.jsx";
+import AdminDashboard from "../admin-pages/dashboard/AdminDashboard.jsx";
+import StudentList from "../admin-pages/student/StudentList.jsx";
+import AdminList from "../admin-pages/admin/AdminList";
+import ManageExam from "../admin-pages/exam/ManageExam.jsx";
+import CreateExam from "../admin-pages/exam/CreateExam.jsx";
+import CreateCourse from "../admin-pages/exam/CreateCourse.jsx";
+import CoursesTable from "../admin-pages/exam/CourseTable.jsx";
 
 const AdminRoutes = () => {
   return (

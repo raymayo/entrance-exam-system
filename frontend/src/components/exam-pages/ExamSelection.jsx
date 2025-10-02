@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useStudent } from "../context/StudentContext.jsx";
+import { useStudent } from "../../context/StudentContext.jsx";
 import { useEffect, useState } from "react";
 import {
-Lock,
-Play
+  Lock,
+  Play
 } from "lucide-react";
 
 // Map exam titles to icons
@@ -55,12 +55,13 @@ const ExamSelection = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!student || !student.examScores) return;
-
+    const totalScore = Object.values(student.examScores).reduce((acc, score) => acc + (score || 0), 0);
+    console.log("Total Score:", totalScore);
     try {
       const response = await fetch(`http://localhost:5000/api/register/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ examScores: student.examScores }),
+        body: JSON.stringify({ examScores: student.examScores, totalScore: totalScore, status: "Exam Taken" }),
       });
 
       if (!response.ok) {
@@ -83,37 +84,37 @@ const ExamSelection = () => {
         <h1 className="text-3xl font-semibold">Welcome to the Entrance Exam</h1>
         <p className="text-zinc-600 text-md">Please complete the following sections in order.</p>
       </div>
-     
+
       <main className="w-full h-full max-h-fit max-w-7xl gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
         {loading ? (
           <p>Loading exams...</p>
         ) : (
-            subjects.map((exam) => {
-              // const Icon = icons[exam.title] || Globe2; // fallback icon
-              const score = student.examScores?.[exam.title] ?? null;
-              const finished = score !== null;
+          subjects.map((exam) => {
+            // const Icon = icons[exam.title] || Globe2; // fallback icon
+            const score = student.examScores?.[exam.title] ?? null;
+            const finished = score !== null;
 
-              return (
-                <div
-                  key={exam._id || exam.id}
-                  className="h-full w-full p-4 flex flex-col rounded-md border border-zinc-200 text-left shadow-2xs">
-                  <h1 className="text-lg font-semibold capitalize">{formatTitle(exam.title)} Exam</h1>
-                  <p className="text-sm text-zinc-600">score: {score !== null ? score : "???"} | 10 questions</p>
-                  {/* <p>Score: {score !== null ? score : "Not Taken"}</p> */}
-                  <button
-                    className="mt-4 cursor-pointer rounded border border-zinc-300 bg-zinc-900 p-2 text-sm text-zinc-100 shadow-2xs hover:bg-zinc-800 disabled:bg-zinc-300 disabled:text-zinc-500"
-                    disabled={finished}
-                    onClick={() => handleStart(exam.title)}
-                  >
-                    {finished ? 
+            return (
+              <div
+                key={exam._id || exam.id}
+                className="h-full w-full p-4 flex flex-col rounded-md border border-zinc-200 text-left shadow-2xs">
+                <h1 className="text-lg font-semibold capitalize">{formatTitle(exam.title)} Exam</h1>
+                <p className="text-sm text-zinc-600">score: {score !== null ? score : "???"} | 10 questions</p>
+                {/* <p>Score: {score !== null ? score : "Not Taken"}</p> */}
+                <button
+                  className="mt-4 cursor-pointer rounded border border-zinc-300 bg-zinc-900 p-2 text-sm text-zinc-100 shadow-2xs hover:bg-zinc-800 disabled:bg-zinc-300 disabled:text-zinc-500"
+                  disabled={finished}
+                  onClick={() => handleStart(exam.title)}
+                >
+                  {finished ?
                     <div className="w-full flex justify-center items-center gap-1 cursor-not-allowed">
-                        <Lock size={20} /> Locked 
-                        </div>
+                      <Lock size={20} /> Locked
+                    </div>
                     : "Start"}
-                  </button>
-                </div>
-              );
-            })
+                </button>
+              </div>
+            );
+          })
 
         )}
 

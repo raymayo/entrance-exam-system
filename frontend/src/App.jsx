@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Registration from "./components/Registration.jsx";
-import GenerateQR from "./components/GenerateQR.jsx";
-import Entrance from "./components/Entrance.jsx";
-import UpdateDetails from "./components/UpdateDetails.jsx";
-import ExamSelection from "./components/ExamSelection.jsx";
-import Exam from "./components/Exam.jsx";
-import Success from "./components/Success.jsx";
-import Scanner from "./components/CodeScanner.jsx";
+import Registration from "./components/exam-pages/Registration.jsx";
+import GenerateQR from "./components/exam-pages/GenerateQR.jsx";
+import Entrance from "./components/exam-pages/Entrance.jsx";
+import UpdateDetails from "./components/exam-pages/UpdateDetails.jsx";
+import ExamSelection from "./components/exam-pages/ExamSelection.jsx";
+import Exam from "./components/exam-pages/Exam.jsx";
+import Success from "./components/exam-pages/Success.jsx";
+import Scanner from "./components/exam-pages/CodeScanner.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { StudentProvider } from "./context/StudentContext.jsx"; // Import your context provider
 import AdminLogin from "./components/AdminLogin.jsx";

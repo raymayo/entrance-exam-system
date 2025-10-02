@@ -8,17 +8,6 @@ export const removeExpiresAtOnLogin = async (req, res) => {
 
         // Compare password directly if it's stored as plain text
         if (student && password === student.password) {
-            // if (student.expiresAt) {
-            //     console.log('Before deleting expiresAt:', student.expiresAt);
-            //     await Student.updateOne(
-            //         { regNo },
-            //         { $unset: { expiresAt: "" } } // This removes the expiresAt field
-            //     );
-            //     console.log('After deleting expiresAt:', student.expiresAt);
-            // } else {
-            //     console.log('No expiresAt field to delete.');
-            // }
-
             res.status(200).json({ message: 'Login successful.' });
         } else {
             res.status(400).json({ message: 'Invalid credentials.' });
@@ -92,4 +81,14 @@ export const editStudent = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+export const deleteStudent = async (req, res) => {
+    try {
+        const student = await Student.findOneAndDelete({ regNo: req.params.regNo });
+        if (!student) return res.status(404).json({ error: "Student not found" });
+        res.status(200).json({ message: "Student deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 

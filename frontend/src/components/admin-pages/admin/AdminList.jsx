@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Plus, SquarePen } from "lucide-react";
-import Tooltip from "../admin-components/Tooltip";
+import Tooltip from "../../admin-components/Tooltip.jsx";
 import CreateAdminModal from "./CreateAdminModal.jsx";
 
 const AdminList = () => {
@@ -59,7 +59,7 @@ const AdminList = () => {
       </button> */}
       <div className="flex items-center justify-center">
 
-      <h1 className="w-full text-2xl font-semibold">Manage Administrators</h1>
+        <h1 className="w-full text-2xl font-semibold">Manage Administrators</h1>
         <button onClick={() => openCreateModal()} className="w-35 text-sm border-zinc-300 cursor-pointer shadow-2xs p-2 rounded border">Create Admin</button>
       </div>
       <div className="h-fit rounded-md border border-zinc-300 bg-white">

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useStudent } from "../context/StudentContext.jsx";
+import { useStudent } from "../../context/StudentContext.jsx";
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -19,13 +19,25 @@ import { format } from "date-fns"
 
 
 const UpdateDetails = () => {
+
   const navigate = useNavigate();
   const { id } = useParams();
-  const { student, setStudent } = useStudent(); // Use setStudent here
+  const { student, setStudent } = useStudent();
 
   const [errorMessage, setErrorMessage] = useState("");
   // eslint-disable-next-line no-unused-vars
   const [key, setKey] = useState(id);
+
+  // 👇 Always declare hooks here, never after a conditional
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState(undefined);
+
+  useEffect(() => {
+    if (student?.birthday) {
+      setDate(new Date(student.birthday));
+    }
+  }, [student?.birthday]);
+
 
   const submitStudentData = async () => {
     try {
@@ -77,6 +89,7 @@ const UpdateDetails = () => {
             examDate: Date.now(),
             examScores: {
             },
+            status: "Registered",
           });
         } else {
           setErrorMessage("Error fetching student data");
@@ -124,10 +137,7 @@ const UpdateDetails = () => {
     return <div>Loading...</div>; // Show loading message until student data is fetched
   }
 
-  const [open, setOpen] = useState(false)
-  const [date, setDate] = useState(
-    student?.birthday ? new Date(student.birthday) : undefined
-  )
+
 
   return (
     <div className="grid h-screen w-screen place-items-center">

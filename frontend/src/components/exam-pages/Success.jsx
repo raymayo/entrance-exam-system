@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useStudent } from "../context/StudentContext.jsx";
+import { useStudent } from "../../context/StudentContext.jsx";
 
 const Success = () => {
   const navigate = useNavigate();

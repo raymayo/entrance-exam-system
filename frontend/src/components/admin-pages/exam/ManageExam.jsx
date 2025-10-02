@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Tooltip from "../admin-components/Tooltip.jsx";
+import Tooltip from "../../admin-components/Tooltip.jsx";
 import { SquarePen, Eye, Trash } from "lucide-react";
 import EditExamModal from "./EditExamModal.jsx";
 import ViewExamModel from "./ViewExamModal.jsx";
@@ -9,7 +9,7 @@ const ManageExam = () => {
   const [exams, setExams] = useState([]);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [viewModalOpen, setViewModalOpen] = useState(false);
-  const [selectedExam, setSelectedExam] = useState(null); 
+  const [selectedExam, setSelectedExam] = useState(null);
 
   const openEditModal = (selectedExam) => {
     setSelectedExam(selectedExam);
@@ -91,7 +91,7 @@ const ManageExam = () => {
 
                     <Tooltip text="View Exam" position="top">
                       <button
-                    onClick={() => openViewModal(exam._id)}
+                        onClick={() => openViewModal(exam._id)}
                         className="cursor-pointer rounded-md border border-zinc-300 p-2 shadow-2xs transition-all duration-200 hover:bg-zinc-100"
                       >
                         <Eye size={16} className="text-zinc-900" />

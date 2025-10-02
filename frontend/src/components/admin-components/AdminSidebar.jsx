@@ -240,10 +240,10 @@ const AdminSidebar = () => {
         </DropdownMenu>
         <DropdownMenu title="Reports" icon={SquareUser}>
           <NavLink
-            to="/admin/admin-list"
+            to="/admin/students"
             className="block rounded-md px-3 py-1 text-sm hover:bg-zinc-200/50"
           >
-            Student Reports
+            Examinee Masterlist
           </NavLink>
 
           <NavLink
