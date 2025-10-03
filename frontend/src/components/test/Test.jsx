@@ -19,6 +19,7 @@ import SubjectPerformance from "./SubjectPerformance.jsx"
 import QuestionStats from "./QuestionStats.jsx"
 import SchoolStats from "./SchoolStats.jsx"
 import { Car } from "lucide-react"
+import SearchAbleSelect from "./SearchableSelect"
 
 const Test = () => {
 
@@ -43,6 +44,7 @@ const Test = () => {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
+                            <SearchAbleSelect />
                             <IndividualScoreReport />
                         </CardContent>
                     </Card>

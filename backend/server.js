@@ -11,6 +11,7 @@ import courseRoute from "./routes/courseRoutes.js";
 import reportRoute from "./routes/reportRoutes.js"
 import schoolRoute from "./routes/schoolRoutes.js"
 import examResultRoute from './routes/examResultRoutes.js'
+import psgcRoute from './routes/psgcRoutes.js'
 
 
 
@@ -29,6 +30,7 @@ app.use("/api/course", courseRoute);
 app.use("/api/report", reportRoute);
 app.use("/api/school", schoolRoute);
 app.use("/api/exam-result", examResultRoute);
+app.use("/api/psgc", psgcRoute);
 
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/entrance-exam";
 
