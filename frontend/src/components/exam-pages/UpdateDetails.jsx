@@ -16,6 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 
 import { ChevronDownIcon } from "lucide-react"
 import { format } from "date-fns"
+import SchoolSelect from "../exam-components/SchoolSelect.jsx";
 
 
 const UpdateDetails = () => {
@@ -72,6 +73,7 @@ const UpdateDetails = () => {
 
         if (response.ok) {
           setStudent({
+            _id: data._id,
             regNo: data.regNo,
             email: data.email,
             phone: data.phone,
@@ -287,13 +289,23 @@ const UpdateDetails = () => {
               </label>
               <label className="col-span-3 flex flex-col gap-1 text-sm font-medium">
                 Last School Attended
-                <Input
+                {/* <Input
                   type="text"
                   name="lastSchool"
                   value={student?.lastSchool || ""}
                   onChange={handleChange}
                   placeholder="Name of Previous School"
                   required
+                /> */}
+                <SchoolSelect
+                  selectedSchool={student.lastSchool}
+                  onSelect={(school) =>
+                    setStudent(prev => ({
+                      ...prev,
+                      lastSchool: school.institutionName,
+                      lastSchoolAddress: `${school.municipality}, ${school.province}`
+                    }))
+                  }
                 />
               </label>
               <label className="col-span-3 flex flex-col gap-1 text-sm font-medium">

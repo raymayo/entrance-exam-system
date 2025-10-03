@@ -1,4 +1,6 @@
 import Student from "../models/Student.js";
+import ExamResult from "../models/ExamResult.js";
+import Exam from "../models/Exam.js";
 
 export const examTakers = async (req, res) => {
     try {
@@ -112,3 +114,262 @@ export const getStrandSummary = async (req, res) => {
     }
 };
 
+export const getExamStats = async (req, res) => {
+    try {
+        const stats = await ExamResult.aggregate([
+            {
+                $lookup: {
+                    from: "exams",
+                    localField: "examId",
+                    foreignField: "_id",
+                    as: "exam",
+                },
+            },
+            { $unwind: "$exam" },
+
+            {
+                $addFields: {
+                    subjectKey: { $ifNull: ["$exam.title", "Unknown"] }, // ✅ use title as subject
+                    effectivePassing: { $ifNull: ["$exam.passingScore", 20] }, // default 20
+                },
+            },
+
+            {
+                $group: {
+                    _id: "$subjectKey",
+                    highest: { $max: "$score" },
+                    lowest: { $min: "$score" },
+                    average: { $avg: "$score" },
+                    total: { $sum: 1 },
+                    passed: {
+                        $sum: { $cond: [{ $gte: ["$score", "$effectivePassing"] }, 1, 0] },
+                    },
+                },
+            },
+
+            {
+                $project: {
+                    _id: 0,
+                    subject: "$_id",
+                    highest: 1,
+                    lowest: 1,
+                    average: { $round: ["$average", 1] },
+                    passingRate: {
+                        $cond: [
+                            { $gt: ["$total", 0] },
+                            { $divide: ["$passed", "$total"] },
+                            0,
+                        ],
+                    },
+                },
+            },
+            { $sort: { subject: 1 } },
+        ]);
+
+        res.json(stats);
+    } catch (err) {
+        console.error("Stats aggregation error:", err);
+        res.status(500).json({
+            error: "Failed to calculate stats",
+            details: err.message,
+        });
+    }
+};
+
+
+export const getQuestionStats = async (req, res) => {
+    try {
+        const stats = await ExamResult.aggregate([
+            // Expand answers so each row is one student's response to one question
+            { $unwind: "$answers" },
+
+            // Join with Exam to get subject & question text
+            {
+                $lookup: {
+                    from: "exams",
+                    localField: "examId",
+                    foreignField: "_id",
+                    as: "exam",
+                },
+            },
+            { $unwind: "$exam" },
+
+            // Match the specific question in the exam.questions array
+            {
+                $addFields: {
+                    questionObj: {
+                        $arrayElemAt: [
+                            {
+                                $filter: {
+                                    input: "$exam.questions",
+                                    as: "q",
+                                    cond: { $eq: ["$$q._id", "$answers.questionId"] },
+                                },
+                            },
+                            0,
+                        ],
+                    },
+                },
+            },
+
+            // Group by question
+            {
+                $group: {
+                    _id: {
+                        subject: "$exam.title",      // or "$exam.subjectId" if you add it
+                        questionId: "$answers.questionId",
+                        questionText: "$questionObj.questionText",
+                    },
+                    totalResponses: { $sum: 1 },
+                    correctResponses: {
+                        $sum: { $cond: ["$answers.isCorrect", 1, 0] },
+                    },
+                },
+            },
+
+            // Compute difficulty index
+            {
+                $project: {
+                    _id: 0,
+                    subject: "$_id.subject",
+                    questionId: "$_id.questionId",
+                    questionText: "$_id.questionText",
+                    correctResponses: 1,
+                    totalResponses: 1,
+                    difficultyIndex: {
+                        $round: [
+                            {
+                                $multiply: [
+                                    { $divide: ["$correctResponses", "$totalResponses"] },
+                                    100,
+                                ],
+                            },
+                            0,
+                        ],
+                    },
+                },
+            },
+            { $sort: { subject: 1, questionId: 1 } },
+        ]);
+
+        res.json(stats);
+    } catch (err) {
+        console.error("Question stats aggregation error:", err);
+        res.status(500).json({
+            error: "Failed to calculate question stats",
+            details: err.message,
+        });
+    }
+};
+
+
+export const getSchoolStats = async (req, res) => {
+    try {
+        const pipeline = [
+            // Join the related exam to compute per-exam passing thresholds
+            {
+                $lookup: {
+                    from: "exams",
+                    localField: "examId",
+                    foreignField: "_id",
+                    as: "exam",
+                },
+            },
+            { $unwind: "$exam" },
+
+            // Join the student to get school of origin
+            {
+                $lookup: {
+                    from: "students",
+                    localField: "studentId",
+                    foreignField: "_id",
+                    as: "student",
+                },
+            },
+            { $unwind: "$student" },
+
+            // Derive fields
+            {
+                $addFields: {
+                    schoolKey: { $ifNull: ["$student.lastSchool", "Unknown School"] },
+
+                    // passing threshold: prefer explicit exam.passingScore; otherwise 60% of total items
+                    questionCount: { $size: "$exam.questions" },
+                },
+            },
+            {
+                $addFields: {
+                    effectivePassing: {
+                        $ifNull: [
+                            "$exam.passingScore",
+                            { $ceil: { $multiply: ["$questionCount", 0.6] } }, // 60%
+                        ],
+                    },
+                },
+            },
+            // Was this particular exam attempt passed?
+            {
+                $addFields: {
+                    passedThisExam: { $cond: [{ $gte: ["$score", "$effectivePassing"] }, 1, 0] },
+                },
+            },
+
+            // Collapse to one row per student (per school): tally how many of their exams were passed
+            {
+                $group: {
+                    _id: { studentId: "$studentId", schoolKey: "$schoolKey" },
+                    examsTaken: { $sum: 1 },
+                    examsPassed: { $sum: "$passedThisExam" },
+                },
+            },
+
+            // Decide student-level pass/fail.
+            // RULE: student passes if they passed a MAJORITY of the exams they took.
+            // You can change this rule easily (see notes below).
+            {
+                $addFields: {
+                    studentPassed: {
+                        $cond: [
+                            { $gt: ["$examsTaken", 0] },
+                            { $cond: [{ $gte: ["$examsPassed", { $ceil: { $divide: ["$examsTaken", 2] } }] }, 1, 0] },
+                            0,
+                        ],
+                    },
+                },
+            },
+
+            // Group by school: unique examinees = number of students in this school
+            {
+                $group: {
+                    _id: "$_id.schoolKey",
+                    examinees: { $sum: 1 },                 // unique students
+                    passed: { $sum: "$studentPassed" },     // students who passed by the rule above
+                },
+            },
+
+            {
+                $project: {
+                    _id: 0,
+                    school: "$_id",
+                    examinees: 1,
+                    passed: 1,
+                    failed: { $subtract: ["$examinees", "$passed"] },
+                    passingRate: {
+                        $cond: [
+                            { $gt: ["$examinees", 0] },
+                            { $divide: ["$passed", "$examinees"] }, // 0..1 for frontend %
+                            0,
+                        ],
+                    },
+                },
+            },
+            { $sort: { school: 1 } },
+        ];
+
+        const stats = await ExamResult.aggregate(pipeline);
+        res.json(stats);
+    } catch (err) {
+        console.error("School stats error:", err);
+        res.status(500).json({ error: "Failed to calculate school stats", details: err.message });
+    }
+};

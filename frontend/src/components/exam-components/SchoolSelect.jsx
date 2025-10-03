@@ -74,7 +74,7 @@ const SchoolSelect = ({ selectedSchool: propSelected = null, onSelect }) => {
     }, [debouncedQuery, transferee]); // 👈 re-fetch if transferee changes
 
     return (
-        <div className="flex flex-col gap-2 w-[300px]">
+        <div className="flex gap-2 w-full">
             {/* transferee toggle */}
             <label className="flex items-center gap-2 text-sm">
                 <input
@@ -85,9 +85,9 @@ const SchoolSelect = ({ selectedSchool: propSelected = null, onSelect }) => {
                 Transferee
             </label>
 
-            <Popover open={open} onOpenChange={setOpen}>
+            <Popover open={open} onOpenChange={setOpen} className='w-full'>
                 <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-between">
+                    <Button variant="outline" className="w-full max-w-[300px] justify-between">
                         {selectedSchool ? selectedSchool.institutionName : "Select a school"}
                         <ChevronDown className="ml-2 h-4 w-4" />
                     </Button>

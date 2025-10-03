@@ -39,9 +39,7 @@ const StudentSchema = new mongoose.Schema(
         examScores: {
             type: Map,
             of: Number,
-            default: {
-
-            }
+            default: {}
         },
         examResults: [
             { type: mongoose.Schema.Types.ObjectId, ref: "ExamResult" }
