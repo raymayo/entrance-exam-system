@@ -1,6 +1,8 @@
 import Student from "../models/Student.js";
 import ExamResult from "../models/ExamResult.js";
 import Exam from "../models/Exam.js";
+import Course from "../models/Course.js"
+
 
 export const examTakers = async (req, res) => {
     try {
@@ -373,3 +375,81 @@ export const getSchoolStats = async (req, res) => {
         res.status(500).json({ error: "Failed to calculate school stats", details: err.message });
     }
 };
+
+
+
+function computePlacement({ primaryCourse, secondaryCourse, score }) {
+    if (primaryCourse && score >= primaryCourse.passingScore) {
+        return primaryCourse.name
+    }
+    if (secondaryCourse && score >= secondaryCourse.passingScore) {
+        return secondaryCourse.name
+    }
+    return "Not Qualified"
+}
+
+export async function getStudentsWithScores(req, res) {
+    try {
+        const { status, page = 1, limit = 100 } = req.query
+        const filter = {}
+        if (status) filter.status = status
+
+        const pageNum = Math.max(parseInt(page, 10) || 1, 1)
+        const pageSize = Math.min(Math.max(parseInt(limit, 10) || 100, 1), 500)
+
+        // find students
+        const students = await Student.find(filter)
+            .select("regNo name course1st course2nd totalScore status createdAt")
+            .sort({ createdAt: -1 })
+            .skip((pageNum - 1) * pageSize)
+            .limit(pageSize)
+            .lean()
+
+        // collect all course codes to fetch once
+        const codes = [
+            ...new Set(
+                students.flatMap((s) => [s.course1st, s.course2nd].filter(Boolean))
+            ),
+        ]
+
+        const courseDocs = await Course.find({ name: { $in: codes } }).lean()
+        const courseMap = Object.fromEntries(courseDocs.map((c) => [c.name, c]))
+
+        const data = students.map((s) => {
+            const primaryCourse = s.course1st ? courseMap[s.course1st] : null
+            const secondaryCourse = s.course2nd ? courseMap[s.course2nd] : null
+            const score = typeof s.totalScore === "number" ? s.totalScore : 0
+
+            const finalPlacement = computePlacement({ primaryCourse, secondaryCourse, score })
+
+            return {
+                examineeId: s.regNo,
+                name: s.name || "",
+                primaryChoice: primaryCourse ? primaryCourse.name : null,
+                secondaryChoice: secondaryCourse ? secondaryCourse.name : null,
+                score,
+                primaryCutoff: primaryCourse ? primaryCourse.passingScore : null,
+                secondaryCutoff: secondaryCourse ? secondaryCourse.passingScore : null,
+                finalPlacement,
+                status: s.status,
+            }
+        })
+
+        const total = await Student.countDocuments(filter)
+
+        res.json({
+            data,
+            meta: {
+                total,
+                page: pageNum,
+                limit: pageSize,
+                pageCount: Math.ceil(total / pageSize),
+            },
+        })
+    } catch (err) {
+        console.error("getStudentsWithScores error:", err)
+        res.status(500).json({ message: "Failed to load report", error: err.message })
+    }
+}
+
+export const getPlacements = getStudentsWithScores

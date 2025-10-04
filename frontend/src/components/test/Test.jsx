@@ -19,7 +19,8 @@ import SubjectPerformance from "./SubjectPerformance.jsx"
 import QuestionStats from "./QuestionStats.jsx"
 import SchoolStats from "./SchoolStats.jsx"
 import { Car } from "lucide-react"
-import SearchAbleSelect from "./SearchableSelect"
+// import SearchAbleSelect from "../exam-components/SearchableSelect.jsx"
+import PlacementResults from "./PlacementResults.jsx"
 
 const Test = () => {
 
@@ -32,6 +33,7 @@ const Test = () => {
                     <TabsTrigger value="summary">Summary</TabsTrigger>
                     <TabsTrigger value="question-stats">QuestionStats</TabsTrigger>
                     <TabsTrigger value="school-stats">School Stats</TabsTrigger>
+                    <TabsTrigger value="placement-report">Placement Report</TabsTrigger>
                 </TabsList>
 
                 {/* Tab 1: Individual Score Report */}
@@ -44,7 +46,7 @@ const Test = () => {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <SearchAbleSelect />
+                            {/* <SearchAbleSelect onChange={(loc) => console.log(`${loc?.brgy}, ${loc?.municipality}, ${loc?.province}`)} /> */}
                             <IndividualScoreReport />
                         </CardContent>
                     </Card>
@@ -86,6 +88,13 @@ const Test = () => {
                     <Card>
                         <CardContent>
                             <SchoolStats />
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+                <TabsContent value="placement-report">
+                    <Card>
+                        <CardContent>
+                            <PlacementResults />
                         </CardContent>
                     </Card>
                 </TabsContent>

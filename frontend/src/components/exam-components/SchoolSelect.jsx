@@ -74,9 +74,9 @@ const SchoolSelect = ({ selectedSchool: propSelected = null, onSelect }) => {
     }, [debouncedQuery, transferee]); // 👈 re-fetch if transferee changes
 
     return (
-        <div className="flex gap-2 w-full">
+        <div className="flex w-full items-center gap-2">
             {/* transferee toggle */}
-            <label className="flex items-center gap-2 text-sm">
+            <label className="flex items-center gap-2 text-sm shrink-0">
                 <input
                     type="checkbox"
                     checked={transferee}
@@ -85,65 +85,88 @@ const SchoolSelect = ({ selectedSchool: propSelected = null, onSelect }) => {
                 Transferee
             </label>
 
-            <Popover open={open} onOpenChange={setOpen} className='w-full'>
-                <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full max-w-[300px] justify-between">
-                        {selectedSchool ? selectedSchool.institutionName : "Select a school"}
-                        <ChevronDown className="ml-2 h-4 w-4" />
-                    </Button>
-                </PopoverTrigger>
+            {/* popover takes remaining space and can shrink */}
+            <div className="flex-1 min-w-0">
+                <Popover
+                    open={open}
+                    onOpenChange={(v) => {
+                        setOpen(v)
+                        if (v) setTimeout(() => inputRef?.current?.focus?.(), 0)
+                    }}
+                >
+                    <PopoverTrigger asChild>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            className="w-full justify-between overflow-hidden"
+                        >
+                            <span className="truncate">
+                                {selectedSchool ? selectedSchool.institutionName : "Select a school"}
+                            </span>
+                            <ChevronDown className="ml-2 h-4 w-4 shrink-0" />
+                        </Button>
+                    </PopoverTrigger>
 
-                <PopoverContent className="w-[300px] p-0">
-                    <Command shouldFilter={false}>
-                        <CommandInput
-                            ref={inputRef}
-                            placeholder="Search school..."
-                            value={query}
-                            onValueChange={setQuery}
-                            className="border-b"
-                        />
-                        <CommandList>
-                            {loading && <CommandItem disabled>Loading...</CommandItem>}
+                    {/* match content width to trigger */}
+                    <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
+                        <Command shouldFilter={false}>
+                            <CommandInput
+                                ref={inputRef}
+                                placeholder="Search school..."
+                                value={query}
+                                onValueChange={setQuery}
+                                className="border-b"
+                            />
+                            <CommandList>
+                                {loading && <CommandItem disabled>Loading...</CommandItem>}
 
-                            {!loading && schools.length === 0 && (
-                                <CommandEmpty className='text-center p-2'>
-                                    No results found.{" "}
-                                    <button
-                                        className="text-blue-500 underline ml-1"
-                                        onClick={() => {
-                                            const newSchool = query;
-                                            setSelectedSchool(newSchool);
-                                            onSelect?.(newSchool);
-                                            setOpen(false);
-                                            setQuery("");
+                                {!loading && schools.length === 0 && (
+                                    <CommandEmpty className="p-2 text-center">
+                                        No results found.
+                                        <button
+                                            type="button"
+                                            className="ml-1 underline text-blue-500"
+                                            onClick={() => {
+                                                const custom = {
+                                                    _id: `custom:${query}`,
+                                                    institutionName: query,
+                                                    isCustom: true,
+                                                }
+                                                setSelectedSchool(custom)
+                                                onSelect?.(custom)
+                                                setOpen(false)
+                                                setQuery("")
+                                            }}
+                                        >
+                                            Select "{query}"
+                                        </button>
+                                    </CommandEmpty>
+                                )}
+
+                                {schools.map((school) => (
+                                    <CommandItem
+                                        key={school._id}
+                                        value={school.institutionName}
+                                        onSelect={() => {
+                                            setSelectedSchool(school)
+                                            onSelect?.(school)
+                                            setOpen(false)
+                                            setQuery("")
                                         }}
                                     >
-                                        Select "{query}"
-                                    </button>
-                                </CommandEmpty>
-                            )}
-
-                            {schools.map((school) => (
-                                <CommandItem
-                                    key={school._id}
-                                    onSelect={() => {
-                                        setSelectedSchool(school);
-                                        onSelect?.(school);
-                                        setOpen(false);
-                                        setQuery("");
-                                    }}
-                                >
-                                    {school.institutionName}
-                                    {selectedSchool?._id === school._id && (
-                                        <Check className="ml-auto h-4 w-4" />
-                                    )}
-                                </CommandItem>
-                            ))}
-                        </CommandList>
-                    </Command>
-                </PopoverContent>
-            </Popover>
+                                        <span className="truncate">{school.institutionName}</span>
+                                        {selectedSchool?._id === school._id && (
+                                            <Check className="ml-auto h-4 w-4 shrink-0" />
+                                        )}
+                                    </CommandItem>
+                                ))}
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
+            </div>
         </div>
+
     );
 };
 

@@ -22,12 +22,12 @@ function SimpleSelect({
     onSelect,
     open,
     setOpen,
-    buttonClassName = "w-full",
+    buttonClassName = "w-24",
 }) {
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <Button type="button" variant="outline" disabled={disabled} className={`${buttonClassName} justify-between`}>
+                <Button type="button" variant="outline" disabled={disabled} className={`${buttonClassName} justify-between truncate`}>
                     {value || buttonLabel}
                     <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -196,10 +196,10 @@ export default function PSGCSelect({
     const selectBarangay = (b) => setBrgy(b);
 
     return (
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 ${className || ""}`}>
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full gap-2 ${className || ""}`}>
             {/* REGION */}
             <div className="flex flex-col gap-1">
-                <span className="text-xs text-muted-foreground">{labelText.region}</span>
+                {/* <span className="text-xs text-muted-foreground">{labelText.region}</span> */}
                 <SimpleSelect
                     buttonLabel="Select region"
                     value={region}
@@ -216,7 +216,7 @@ export default function PSGCSelect({
 
             {/* PROVINCE */}
             <div className="flex flex-col gap-1">
-                <span className="text-xs text-muted-foreground">{labelText.province}</span>
+                {/* <span className="text-xs text-muted-foreground">{labelText.province}</span> */}
                 <SimpleSelect
                     buttonLabel="Select province"
                     value={province}
@@ -233,7 +233,7 @@ export default function PSGCSelect({
 
             {/* MUNICIPALITY/CITY */}
             <div className="flex flex-col gap-1">
-                <span className="text-xs text-muted-foreground">{labelText.municipality}</span>
+                {/* <span className="text-xs text-muted-foreground">{labelText.municipality}</span> */}
                 <SimpleSelect
                     buttonLabel="Select municipality"
                     value={municipality}
@@ -250,7 +250,7 @@ export default function PSGCSelect({
 
             {/* BARANGAY */}
             <div className="flex flex-col gap-1">
-                <span className="text-xs text-muted-foreground">{labelText.brgy}</span>
+                {/* <span className="text-xs text-muted-foreground">{labelText.brgy}</span> */}
                 <SimpleSelect
                     buttonLabel="Select barangay"
                     value={brgy}

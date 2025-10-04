@@ -17,6 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ChevronDownIcon } from "lucide-react"
 import { format } from "date-fns"
 import SchoolSelect from "../exam-components/SchoolSelect.jsx";
+import SearchableSelect from "../exam-components/SearchableSelect"
 
 
 const UpdateDetails = () => {
@@ -24,6 +25,7 @@ const UpdateDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { student, setStudent } = useStudent();
+  const [courses, setCourses] = useState([]);
 
   const [errorMessage, setErrorMessage] = useState("");
   // eslint-disable-next-line no-unused-vars
@@ -58,10 +60,22 @@ const UpdateDetails = () => {
     }
   };
 
+  const fetchCourse = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/course")
+      if (!res.ok) {
+        throw new Error("Failed to fetch courses")
+      }
+      const data = await res.json()
+      setCourses(data)
+      console.log("Courses:", data)
+    } catch (err) {
+      console.error("fetchCourse error:", err)
+    }
+  }
+
   useEffect(() => {
     if (!id) return;
-
-    // Fetch the student data from the API
     const fetchStudentData = async () => {
       try {
         const response = await fetch(
@@ -104,7 +118,7 @@ const UpdateDetails = () => {
       }
     };
     fetchStudentData();
-
+    fetchCourse();
   }, [id, setStudent, navigate,]);
 
   const handleChange = (eOrName, maybeValue) => {
@@ -144,7 +158,7 @@ const UpdateDetails = () => {
   return (
     <div className="grid h-screen w-screen place-items-center">
       <div className="pattern rounded-md border border-zinc-200 shadow-md">
-        <div className="w-full max-w-4xl rounded-md bg-white p-8 shadow-2xs">
+        <div className="w-full max-w-5xl rounded-md bg-white p-8 shadow-2xs">
           <h1 className="mb-2 text-center text-xl font-semibold">
             Student Details
           </h1>
@@ -220,14 +234,18 @@ const UpdateDetails = () => {
               </label>
               <label className="col-span-6 flex flex-col gap-1 text-sm font-medium">
                 Address
-                <Input
+                {/* <Input
                   type="text"
                   name="address"
                   placeholder="e.g. 0123 Rizal St. Matain, Subic, Zambales"
                   value={student?.address || ""}
                   onChange={handleChange}
                   required
-                />
+                /> */}
+                <SearchableSelect onChange={(loc) => setStudent(prev => ({
+                  ...prev,
+                  address: `${loc?.brgy}, ${loc?.municipality}, ${loc?.province}`,
+                }))} />
               </label>
               <label className="col-span-2 flex flex-col gap-1 text-sm font-medium">
                 Birthday
@@ -236,7 +254,7 @@ const UpdateDetails = () => {
                     <Button
                       variant="outline"
                       id="birthday"
-                      className="w-48 justify-between font-normal"
+                      className=" justify-between font-normal w-full"
                     >
                       {date ? format(date, "MMMM d, yyyy") : "Select date"}
                       <ChevronDownIcon className="ml-2 h-4 w-4 opacity-50" />
@@ -329,19 +347,13 @@ const UpdateDetails = () => {
                     <SelectValue placeholder="Select Course" />
                   </SelectTrigger>
                   <SelectContent>
-                    {[
-                      "BSBA HRM",
-                      "BSBA FM",
-                      "BSA",
-                      "BSCS",
-                      "BSED MATH & FIL",
-                      "BSED SOCSTUD",
-                      "BEED",
-                      "CPE",
-                      "BSHM",
-                    ].map((course) => (
-                      <SelectItem key={course} value={course}>
-                        {course}
+                    {courses.map((course) => (
+                      <SelectItem
+                        key={course._id}
+                        value={course.name}
+                        disabled={student?.course1st === course.name} // prevent selecting same as 1st
+                      >
+                        {course.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -359,23 +371,13 @@ const UpdateDetails = () => {
                     <SelectValue placeholder="Select Course" />
                   </SelectTrigger>
                   <SelectContent>
-                    {[
-                      "BSBA HRM",
-                      "BSBA FM",
-                      "BSA",
-                      "BSCS",
-                      "BSED MATH & FIL",
-                      "BSED SOCSTUD",
-                      "BEED",
-                      "CPE",
-                      "BSHM",
-                    ].map((course) => (
+                    {courses.map((course) => (
                       <SelectItem
-                        key={course}
-                        value={course}
-                        disabled={student?.course1st === course} // prevent selecting same as 1st
+                        key={course._id}
+                        value={course.name}
+                        disabled={student?.course1st === course.name} // prevent selecting same as 1st
                       >
-                        {course}
+                        {course.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
