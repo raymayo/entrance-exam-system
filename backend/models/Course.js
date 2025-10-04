@@ -3,7 +3,7 @@ import mongoose, { Mongoose } from "mongoose";
 const CourseSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
         trim: true,
     },
@@ -25,10 +25,6 @@ const CourseSchema = new mongoose.Schema({
     durationYears: {
         type: String,
         default: "4",
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     },
 },
     { timestamps: true }
